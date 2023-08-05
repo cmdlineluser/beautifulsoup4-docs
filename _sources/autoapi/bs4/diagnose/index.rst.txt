@@ -1,0 +1,163 @@
+:py:mod:`bs4.diagnose`
+======================
+
+.. py:module:: bs4.diagnose
+
+.. autoapi-nested-parse::
+
+   Diagnostic functions, mainly for use when doing tech support.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.diagnose.AnnouncingParser
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   bs4.diagnose.diagnose
+   bs4.diagnose.lxml_trace
+   bs4.diagnose.htmlparser_trace
+   bs4.diagnose.rword
+   bs4.diagnose.rsentence
+   bs4.diagnose.rdoc
+   bs4.diagnose.benchmark_parsers
+   bs4.diagnose.profile
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   bs4.diagnose.__license__
+   bs4.diagnose._vowels
+   bs4.diagnose._consonants
+
+
+.. py:data:: __license__
+   :value: 'MIT'
+
+   
+
+.. py:function:: diagnose(data)
+
+   Diagnostic suite for isolating common problems.
+
+   :param data: A string containing markup that needs to be explained.
+   :return: None; diagnostics are printed to standard output.
+
+
+.. py:function:: lxml_trace(data, html=True, **kwargs)
+
+   Print out the lxml events that occur during parsing.
+
+   This lets you see how lxml parses a document when no Beautiful
+   Soup code is running. You can use this to determine whether
+   an lxml-specific problem is in Beautiful Soup's lxml tree builders
+   or in lxml itself.
+
+   :param data: Some markup.
+   :param html: If True, markup will be parsed with lxml's HTML parser.
+      if False, lxml's XML parser will be used.
+
+
+.. py:class:: AnnouncingParser(*, convert_charrefs=True)
+
+
+   Bases: :py:obj:`html.parser.HTMLParser`
+
+   Subclass of HTMLParser that announces parse events, without doing
+   anything else.
+
+   You can use this to get a picture of how html.parser sees a given
+   document. The easiest way to do this is to call `htmlparser_trace`.
+
+   .. py:method:: _p(s)
+
+
+   .. py:method:: handle_starttag(name, attrs)
+
+
+   .. py:method:: handle_endtag(name)
+
+
+   .. py:method:: handle_data(data)
+
+
+   .. py:method:: handle_charref(name)
+
+
+   .. py:method:: handle_entityref(name)
+
+
+   .. py:method:: handle_comment(data)
+
+
+   .. py:method:: handle_decl(data)
+
+
+   .. py:method:: unknown_decl(data)
+
+
+   .. py:method:: handle_pi(data)
+
+
+
+.. py:function:: htmlparser_trace(data)
+
+   Print out the HTMLParser events that occur during parsing.
+
+   This lets you see how HTMLParser parses a document when no
+   Beautiful Soup code is running.
+
+   :param data: Some markup.
+
+
+.. py:data:: _vowels
+   :value: 'aeiou'
+
+   
+
+.. py:data:: _consonants
+   :value: 'bcdfghjklmnpqrstvwxyz'
+
+   
+
+.. py:function:: rword(length=5)
+
+   Generate a random word-like string.
+
+
+.. py:function:: rsentence(length=4)
+
+   Generate a random sentence-like string.
+
+
+.. py:function:: rdoc(num_elements=1000)
+
+   Randomly generate an invalid HTML document.
+
+
+.. py:function:: benchmark_parsers(num_elements=100000)
+
+   Very basic head-to-head performance benchmark.
+
+
+.. py:function:: profile(num_elements=100000, parser='lxml')
+
+   Use Python's profiler on a randomly generated document.
+
+

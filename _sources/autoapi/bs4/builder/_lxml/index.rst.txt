@@ -1,0 +1,240 @@
+:py:mod:`bs4.builder._lxml`
+===========================
+
+.. py:module:: bs4.builder._lxml
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.builder._lxml.LXMLTreeBuilderForXML
+   bs4.builder._lxml.LXMLTreeBuilder
+
+
+
+
+.. py:class:: LXMLTreeBuilderForXML(parser=None, empty_element_tags=None, **kwargs)
+
+
+   Bases: :py:obj:`bs4.builder.TreeBuilder`
+
+   Turn a textual document into a Beautiful Soup object tree.
+
+   .. py:attribute:: DEFAULT_PARSER_CLASS
+
+      
+
+   .. py:attribute:: is_xml
+      :value: True
+
+      
+
+   .. py:attribute:: processing_instruction_class
+
+      
+
+   .. py:attribute:: NAME
+      :value: 'lxml-xml'
+
+      
+
+   .. py:attribute:: ALTERNATE_NAMES
+      :value: ['xml']
+
+      
+
+   .. py:attribute:: features
+
+      
+
+   .. py:attribute:: CHUNK_SIZE
+      :value: 512
+
+      
+
+   .. py:attribute:: DEFAULT_NSMAPS
+
+      
+
+   .. py:attribute:: DEFAULT_NSMAPS_INVERTED
+
+      
+
+   .. py:method:: initialize_soup(soup)
+
+      Let the BeautifulSoup object know about the standard namespace
+      mapping.
+
+      :param soup: A `BeautifulSoup`.
+
+
+   .. py:method:: _register_namespaces(mapping)
+
+      Let the BeautifulSoup object know about namespaces encountered
+      while parsing the document.
+
+      This might be useful later on when creating CSS selectors.
+
+      This will track (almost) all namespaces, even ones that were
+      only in scope for part of the document. If two namespaces have
+      the same prefix, only the first one encountered will be
+      tracked. Un-prefixed namespaces are not tracked.
+
+      :param mapping: A dictionary mapping namespace prefixes to URIs.
+
+
+   .. py:method:: default_parser(encoding)
+
+      Find the default parser for the given encoding.
+
+      :param encoding: A string.
+      :return: Either a parser object or a class, which
+        will be instantiated with default arguments.
+
+
+   .. py:method:: parser_for(encoding)
+
+      Instantiate an appropriate parser for the given encoding.
+
+      :param encoding: A string.
+      :return: A parser object such as an `etree.XMLParser`.
+
+
+   .. py:method:: _getNsTag(tag)
+
+
+   .. py:method:: prepare_markup(markup, user_specified_encoding=None, exclude_encodings=None, document_declared_encoding=None)
+
+      Run any preliminary steps necessary to make incoming markup
+      acceptable to the parser.
+
+      lxml really wants to get a bytestring and convert it to
+      Unicode itself. So instead of using UnicodeDammit to convert
+      the bytestring to Unicode using different encodings, this
+      implementation uses EncodingDetector to iterate over the
+      encodings, and tell lxml to try to parse the document as each
+      one in turn.
+
+      :param markup: Some markup -- hopefully a bytestring.
+      :param user_specified_encoding: The user asked to try this encoding.
+      :param document_declared_encoding: The markup itself claims to be
+          in this encoding.
+      :param exclude_encodings: The user asked _not_ to try any of
+          these encodings.
+
+      :yield: A series of 4-tuples:
+       (markup, encoding, declared encoding,
+        has undergone character replacement)
+
+       Each 4-tuple represents a strategy for converting the
+       document to Unicode and parsing it. Each strategy will be tried 
+       in turn.
+
+
+   .. py:method:: feed(markup)
+
+      Run some incoming markup through some parsing process,
+      populating the `BeautifulSoup` object in self.soup.
+
+      This method is not implemented in TreeBuilder; it must be
+      implemented in subclasses.
+
+      :return: None.
+
+
+   .. py:method:: close()
+
+
+   .. py:method:: start(name, attrs, nsmap={})
+
+
+   .. py:method:: _prefix_for_namespace(namespace)
+
+      Find the currently active prefix for the given namespace.
+
+
+   .. py:method:: end(name)
+
+
+   .. py:method:: pi(target, data)
+
+
+   .. py:method:: data(content)
+
+
+   .. py:method:: doctype(name, pubid, system)
+
+
+   .. py:method:: comment(content)
+
+      Handle comments as Comment objects.
+
+
+   .. py:method:: test_fragment_to_document(fragment)
+
+      See `TreeBuilder`.
+
+
+
+.. py:class:: LXMLTreeBuilder(multi_valued_attributes=USE_DEFAULT, preserve_whitespace_tags=USE_DEFAULT, store_line_numbers=USE_DEFAULT, string_containers=USE_DEFAULT)
+
+
+   Bases: :py:obj:`bs4.builder.HTMLTreeBuilder`, :py:obj:`LXMLTreeBuilderForXML`
+
+   This TreeBuilder knows facts about HTML.
+
+   Such as which tags are empty-element tags.
+
+   .. py:attribute:: NAME
+
+      
+
+   .. py:attribute:: ALTERNATE_NAMES
+      :value: ['lxml-html']
+
+      
+
+   .. py:attribute:: features
+
+      
+
+   .. py:attribute:: is_xml
+      :value: False
+
+      
+
+   .. py:attribute:: processing_instruction_class
+
+      
+
+   .. py:method:: default_parser(encoding)
+
+      Find the default parser for the given encoding.
+
+      :param encoding: A string.
+      :return: Either a parser object or a class, which
+        will be instantiated with default arguments.
+
+
+   .. py:method:: feed(markup)
+
+      Run some incoming markup through some parsing process,
+      populating the `BeautifulSoup` object in self.soup.
+
+      This method is not implemented in TreeBuilder; it must be
+      implemented in subclasses.
+
+      :return: None.
+
+
+   .. py:method:: test_fragment_to_document(fragment)
+
+      See `TreeBuilder`.
+
+
+

@@ -1,0 +1,1647 @@
+:py:mod:`bs4.tests`
+===================
+
+.. py:module:: bs4.tests
+
+.. autoapi-nested-parse::
+
+   Helper classes for tests.
+
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   test_builder/index.rst
+   test_builder_registry/index.rst
+   test_css/index.rst
+   test_dammit/index.rst
+   test_docs/index.rst
+   test_element/index.rst
+   test_formatter/index.rst
+   test_fuzz/index.rst
+   test_html5lib/index.rst
+   test_htmlparser/index.rst
+   test_lxml/index.rst
+   test_navigablestring/index.rst
+   test_pageelement/index.rst
+   test_soup/index.rst
+   test_tag/index.rst
+   test_tree/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.BeautifulSoup
+   bs4.tests.CharsetMetaAttributeValue
+   bs4.tests.Comment
+   bs4.tests.ContentMetaAttributeValue
+   bs4.tests.Doctype
+   bs4.tests.SoupStrainer
+   bs4.tests.Script
+   bs4.tests.Stylesheet
+   bs4.tests.Tag
+   bs4.tests.DetectsXMLParsedAsHTML
+   bs4.tests.SoupTest
+   bs4.tests.TreeBuilderSmokeTest
+   bs4.tests.HTMLTreeBuilderSmokeTest
+   bs4.tests.XMLTreeBuilderSmokeTest
+   bs4.tests.HTML5TreeBuilderSmokeTest
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.__license__
+   bs4.tests.PYTHON_SPECIFIC_ENCODINGS
+   bs4.tests.default_builder
+   bs4.tests.SOUP_SIEVE_PRESENT
+   bs4.tests.HTML5LIB_PRESENT
+   bs4.tests.LXML_PRESENT
+   bs4.tests.BAD_DOCUMENT
+
+
+.. py:data:: __license__
+   :value: 'MIT'
+
+   
+
+.. py:class:: BeautifulSoup(markup='', features=None, builder=None, parse_only=None, from_encoding=None, exclude_encodings=None, element_classes=None, **kwargs)
+
+
+   Bases: :py:obj:`element.Tag`
+
+   A data structure representing a parsed HTML or XML document.
+
+   Most of the methods you'll call on a BeautifulSoup object are inherited from
+   PageElement or Tag.
+
+   Internally, this class defines the basic interface called by the
+   tree builders when converting an HTML/XML document into a data
+   structure. The interface abstracts away the differences between
+   parsers. To write a new tree builder, you'll need to understand
+   these methods as a whole.
+
+   These methods will be called by the BeautifulSoup constructor:
+     * reset()
+     * feed(markup)
+
+   The tree builder may call these methods from its feed() implementation:
+     * handle_starttag(name, attrs) # See note about return value
+     * handle_endtag(name)
+     * handle_data(data) # Appends to the current data node
+     * endData(containerClass) # Ends the current data node
+
+   No matter how complicated the underlying parser is, you should be
+   able to build a tree using 'start tag' events, 'end tag' events,
+   'data' events, and "done with data" events.
+
+   If you encounter an empty-element tag (aka a self-closing tag,
+   like HTML's <br> tag), call handle_starttag and then
+   handle_endtag.
+
+   .. py:attribute:: ROOT_TAG_NAME
+      :value: '[document]'
+
+      
+
+   .. py:attribute:: DEFAULT_BUILDER_FEATURES
+      :value: ['html', 'fast']
+
+      
+
+   .. py:attribute:: ASCII_SPACES
+      :value: Multiline-String
+
+       .. raw:: html
+
+           <details><summary>Show Value</summary>
+
+       .. code-block:: python
+
+           """ 
+           	
+           """
+
+       .. raw:: html
+
+           </details>
+
+      
+
+   .. py:attribute:: NO_PARSER_SPECIFIED_WARNING
+      :value: Multiline-String
+
+       .. raw:: html
+
+           <details><summary>Show Value</summary>
+
+       .. code-block:: python
+
+           """No parser was explicitly specified, so I'm using the best available %(markup_type)s parser for this system ("%(parser)s"). This usually isn't a problem, but if you run this code on another system, or in a different virtual environment, it may use a different parser and behave differently.
+           
+           The code that caused this warning is on line %(line_number)s of the file %(filename)s. To get rid of this warning, pass the additional argument 'features="%(parser)s"' to the BeautifulSoup constructor.
+           """
+
+       .. raw:: html
+
+           </details>
+
+      
+
+   .. py:method:: _clone()
+
+      Create a new BeautifulSoup object with the same TreeBuilder,
+      but not associated with any markup.
+
+      This is the first step of the deepcopy process.
+
+
+   .. py:method:: __getstate__()
+
+      Helper for pickle.
+
+
+   .. py:method:: __setstate__(state)
+
+
+   .. py:method:: _decode_markup(markup)
+      :classmethod:
+
+      Ensure `markup` is bytes so it's safe to send into warnings.warn.
+
+      TODO: warnings.warn had this problem back in 2010 but it might not
+      anymore.
+
+
+   .. py:method:: _markup_is_url(markup)
+      :classmethod:
+
+      Error-handling method to raise a warning if incoming markup looks
+      like a URL.
+
+      :param markup: A string.
+      :return: Whether or not the markup resembles a URL
+          closely enough to justify a warning.
+
+
+   .. py:method:: _markup_resembles_filename(markup)
+      :classmethod:
+
+      Error-handling method to raise a warning if incoming markup
+      resembles a filename.
+
+      :param markup: A bytestring or string.
+      :return: Whether or not the markup resembles a filename
+          closely enough to justify a warning.
+
+
+   .. py:method:: _feed()
+
+      Internal method that parses previously set markup, creating a large
+      number of Tag and NavigableString objects.
+
+
+   .. py:method:: reset()
+
+      Reset this object to a state as though it had never parsed any
+      markup.
+
+
+   .. py:method:: new_tag(name, namespace=None, nsprefix=None, attrs={}, sourceline=None, sourcepos=None, **kwattrs)
+
+      Create a new Tag associated with this BeautifulSoup object.
+
+      :param name: The name of the new Tag.
+      :param namespace: The URI of the new Tag's XML namespace, if any.
+      :param prefix: The prefix for the new Tag's XML namespace, if any.
+      :param attrs: A dictionary of this Tag's attribute values; can
+          be used instead of `kwattrs` for attributes like 'class'
+          that are reserved words in Python.
+      :param sourceline: The line number where this tag was
+          (purportedly) found in its source document.
+      :param sourcepos: The character position within `sourceline` where this
+          tag was (purportedly) found.
+      :param kwattrs: Keyword arguments for the new Tag's attribute values.
+
+
+
+   .. py:method:: string_container(base_class=None)
+
+
+   .. py:method:: new_string(s, subclass=None)
+
+      Create a new NavigableString associated with this BeautifulSoup
+      object.
+
+
+   .. py:method:: insert_before(*args)
+      :abstractmethod:
+
+      This method is part of the PageElement API, but `BeautifulSoup` doesn't implement
+      it because there is nothing before or after it in the parse tree.
+
+
+   .. py:method:: insert_after(*args)
+      :abstractmethod:
+
+      This method is part of the PageElement API, but `BeautifulSoup` doesn't implement
+      it because there is nothing before or after it in the parse tree.
+
+
+   .. py:method:: popTag()
+
+      Internal method called by _popToTag when a tag is closed.
+
+
+   .. py:method:: pushTag(tag)
+
+      Internal method called by handle_starttag when a tag is opened.
+
+
+   .. py:method:: endData(containerClass=None)
+
+      Method called by the TreeBuilder when the end of a data segment
+      occurs.
+
+
+   .. py:method:: object_was_parsed(o, parent=None, most_recent_element=None)
+
+      Method called by the TreeBuilder to integrate an object into the parse tree.
+
+
+   .. py:method:: _linkage_fixer(el)
+
+      Make sure linkage of this fragment is sound.
+
+
+   .. py:method:: _popToTag(name, nsprefix=None, inclusivePop=True)
+
+      Pops the tag stack up to and including the most recent
+      instance of the given tag.
+
+      If there are no open tags with the given name, nothing will be
+      popped.
+
+      :param name: Pop up to the most recent tag with this name.
+      :param nsprefix: The namespace prefix that goes with `name`.
+      :param inclusivePop: It this is false, pops the tag stack up
+        to but *not* including the most recent instqance of the
+        given tag.
+
+
+
+   .. py:method:: handle_starttag(name, namespace, nsprefix, attrs, sourceline=None, sourcepos=None, namespaces=None)
+
+      Called by the tree builder when a new tag is encountered.
+
+      :param name: Name of the tag.
+      :param nsprefix: Namespace prefix for the tag.
+      :param attrs: A dictionary of attribute values.
+      :param sourceline: The line number where this tag was found in its
+          source document.
+      :param sourcepos: The character position within `sourceline` where this
+          tag was found.
+      :param namespaces: A dictionary of all namespace prefix mappings 
+          currently in scope in the document.
+
+      If this method returns None, the tag was rejected by an active
+      SoupStrainer. You should proceed as if the tag had not occurred
+      in the document. For instance, if this was a self-closing tag,
+      don't call handle_endtag.
+
+
+   .. py:method:: handle_endtag(name, nsprefix=None)
+
+      Called by the tree builder when an ending tag is encountered.
+
+      :param name: Name of the tag.
+      :param nsprefix: Namespace prefix for the tag.
+
+
+   .. py:method:: handle_data(data)
+
+      Called by the tree builder when a chunk of textual data is encountered.
+
+
+   .. py:method:: decode(pretty_print=False, eventual_encoding=DEFAULT_OUTPUT_ENCODING, formatter='minimal', iterator=None)
+
+      Returns a string or Unicode representation of the parse tree
+          as an HTML or XML document.
+
+      :param pretty_print: If this is True, indentation will be used to
+          make the document more readable.
+      :param eventual_encoding: The encoding of the final document.
+          If this is None, the document will be a Unicode string.
+
+
+
+.. py:class:: CharsetMetaAttributeValue
+
+
+   Bases: :py:obj:`AttributeValueWithCharsetSubstitution`
+
+   A generic stand-in for the value of a meta tag's 'charset' attribute.
+
+   When Beautiful Soup parses the markup '<meta charset="utf8">', the
+   value of the 'charset' attribute will be one of these objects.
+
+   .. py:method:: encode(encoding)
+
+      When an HTML document is being encoded to a given encoding, the
+      value of a meta tag's 'charset' is the name of the encoding.
+
+
+
+.. py:class:: Comment
+
+
+   Bases: :py:obj:`PreformattedString`
+
+   An HTML or XML comment.
+
+   .. py:attribute:: PREFIX
+      :value: '<!--'
+
+      
+
+   .. py:attribute:: SUFFIX
+      :value: '-->'
+
+      
+
+
+.. py:class:: ContentMetaAttributeValue
+
+
+   Bases: :py:obj:`AttributeValueWithCharsetSubstitution`
+
+   A generic stand-in for the value of a meta tag's 'content' attribute.
+
+   When Beautiful Soup parses the markup:
+    <meta http-equiv="content-type" content="text/html; charset=utf8">
+
+   The value of the 'content' attribute will be one of these objects.
+
+   .. py:attribute:: CHARSET_RE
+
+      
+
+   .. py:method:: encode(encoding)
+
+      Encode the string using the codec registered for encoding.
+
+      encoding
+        The encoding in which to encode the string.
+      errors
+        The error handling scheme to use for encoding errors.
+        The default is 'strict' meaning that encoding errors raise a
+        UnicodeEncodeError.  Other possible values are 'ignore', 'replace' and
+        'xmlcharrefreplace' as well as any other name registered with
+        codecs.register_error that can handle UnicodeEncodeErrors.
+
+
+
+.. py:class:: Doctype
+
+
+   Bases: :py:obj:`PreformattedString`
+
+   A document type declaration.
+
+   .. py:attribute:: PREFIX
+      :value: '<!DOCTYPE '
+
+      
+
+   .. py:attribute:: SUFFIX
+      :value: '>\n'
+
+      
+
+   .. py:method:: for_name_and_ids(name, pub_id, system_id)
+      :classmethod:
+
+      Generate an appropriate document type declaration for a given
+      public ID and system ID.
+
+      :param name: The name of the document's root element, e.g. 'html'.
+      :param pub_id: The Formal Public Identifier for this document type,
+          e.g. '-//W3C//DTD XHTML 1.1//EN'
+      :param system_id: The system identifier for this document type,
+          e.g. 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'
+
+      :return: A Doctype.
+
+
+
+.. py:data:: PYTHON_SPECIFIC_ENCODINGS
+
+   
+
+.. py:class:: SoupStrainer(name=None, attrs={}, string=None, **kwargs)
+
+
+   Bases: :py:obj:`object`
+
+   Encapsulates a number of ways of matching a markup element (tag or
+   string).
+
+   This is primarily used to underpin the find_* methods, but you can
+   create one yourself and pass it in as `parse_only` to the
+   `BeautifulSoup` constructor, to parse a subset of a large
+   document.
+
+   .. py:attribute:: searchTag
+
+      
+
+   .. py:method:: _normalize_search_value(value)
+
+
+   .. py:method:: __str__()
+
+      A human-readable representation of this SoupStrainer.
+
+
+   .. py:method:: search_tag(markup_name=None, markup_attrs={})
+
+      Check whether a Tag with the given name and attributes would
+      match this SoupStrainer.
+
+      Used prospectively to decide whether to even bother creating a Tag
+      object.
+
+      :param markup_name: A tag name as found in some markup.
+      :param markup_attrs: A dictionary of attributes as found in some markup.
+
+      :return: True if the prospective tag would match this SoupStrainer;
+          False otherwise.
+
+
+   .. py:method:: search(markup)
+
+      Find all items in `markup` that match this SoupStrainer.
+
+      Used by the core _find_all() method, which is ultimately
+      called by all find_* methods.
+
+      :param markup: A PageElement or a list of them.
+
+
+   .. py:method:: _matches(markup, match_against, already_tried=None)
+
+
+
+.. py:class:: Script
+
+
+   Bases: :py:obj:`NavigableString`
+
+   A NavigableString representing an executable script (probably
+   Javascript).
+
+   Used to distinguish executable code from textual content.
+
+
+.. py:class:: Stylesheet
+
+
+   Bases: :py:obj:`NavigableString`
+
+   A NavigableString representing an stylesheet (probably
+   CSS).
+
+   Used to distinguish embedded stylesheets from textual content.
+
+
+.. py:class:: Tag(parser=None, builder=None, name=None, namespace=None, prefix=None, attrs=None, parent=None, previous=None, is_xml=None, sourceline=None, sourcepos=None, can_be_empty_element=None, cdata_list_attributes=None, preserve_whitespace_tags=None, interesting_string_types=None, namespaces=None)
+
+
+   Bases: :py:obj:`PageElement`
+
+   Represents an HTML or XML tag that is part of a parse tree, along
+   with its attributes and contents.
+
+   When Beautiful Soup parses the markup <b>penguin</b>, it will
+   create a Tag object representing the <b> tag.
+
+   .. py:property:: is_empty_element
+
+      Is this tag an empty-element tag? (aka a self-closing tag)
+
+      A tag that has contents is never an empty-element tag.
+
+      A tag that has no contents may or may not be an empty-element
+      tag. It depends on the builder used to create the tag. If the
+      builder has a designated list of empty-element tags, then only
+      a tag whose name shows up in that list is considered an
+      empty-element tag.
+
+      If the builder has no designated list of empty-element tags,
+      then any tag with no contents is an empty-element tag.
+
+
+   .. py:property:: string
+
+      Convenience property to get the single string within this
+      PageElement.
+
+      TODO It might make sense to have NavigableString.string return
+      itself.
+
+      :return: If this element has a single string child, return
+       value is that string. If this element has one child tag,
+       return value is the 'string' attribute of the child tag,
+       recursively. If this element is itself a string, has no
+       children, or has more than one child, return value is None.
+
+
+   .. py:property:: children
+
+      Iterate over all direct children of this PageElement.
+
+      :yield: A sequence of PageElements.
+
+
+   .. py:property:: self_and_descendants
+
+      Iterate over this PageElement and its children in a
+      breadth-first sequence.
+
+      :yield: A sequence of PageElements.
+
+
+   .. py:property:: descendants
+
+      Iterate over all children of this PageElement in a
+      breadth-first sequence.
+
+      :yield: A sequence of PageElements.
+
+
+   .. py:property:: css
+
+      Return an interface to the CSS selector API.
+
+
+   .. py:attribute:: parserClass
+
+      
+
+   .. py:attribute:: isSelfClosing
+
+      
+
+   .. py:attribute:: DEFAULT_INTERESTING_STRING_TYPES
+      :value: ()
+
+      
+
+   .. py:attribute:: strings
+
+      
+
+   .. py:attribute:: START_ELEMENT_EVENT
+
+      
+
+   .. py:attribute:: END_ELEMENT_EVENT
+
+      
+
+   .. py:attribute:: EMPTY_ELEMENT_EVENT
+
+      
+
+   .. py:attribute:: STRING_ELEMENT_EVENT
+
+      
+
+   .. py:attribute:: findChild
+
+      
+
+   .. py:attribute:: findAll
+
+      
+
+   .. py:attribute:: findChildren
+
+      
+
+   .. py:method:: __deepcopy__(memo, recursive=True)
+
+      A deepcopy of a Tag is a new Tag, unconnected to the parse tree.
+      Its contents are a copy of the old Tag's contents.
+
+
+   .. py:method:: __copy__()
+
+      A copy of a Tag must always be a deep copy, because a Tag's
+      children can only have one parent at a time.
+
+
+   .. py:method:: _clone()
+
+      Create a new Tag just like this one, but with no
+      contents and unattached to any parse tree.
+
+      This is the first step in the deepcopy process.
+
+
+   .. py:method:: _all_strings(strip=False, types=PageElement.default)
+
+      Yield all strings of certain classes, possibly stripping them.
+
+      :param strip: If True, all strings will be stripped before being
+          yielded.
+
+      :param types: A tuple of NavigableString subclasses. Any strings of
+          a subclass not found in this list will be ignored. By
+          default, the subclasses considered are the ones found in
+          self.interesting_string_types. If that's not specified,
+          only NavigableString and CData objects will be
+          considered. That means no comments, processing
+          instructions, etc.
+
+      :yield: A sequence of strings.
+
+
+
+   .. py:method:: decompose()
+
+      Recursively destroys this PageElement and its children.
+
+      This element will be removed from the tree and wiped out; so
+      will everything beneath it.
+
+      The behavior of a decomposed PageElement is undefined and you
+      should never use one for anything, but if you need to _check_
+      whether an element has been decomposed, you can use the
+      `decomposed` property.
+
+
+   .. py:method:: clear(decompose=False)
+
+      Wipe out all children of this PageElement by calling extract()
+         on them.
+
+      :param decompose: If this is True, decompose() (a more
+          destructive method) will be called instead of extract().
+
+
+   .. py:method:: smooth()
+
+      Smooth out this element's children by consolidating consecutive
+      strings.
+
+      This makes pretty-printed output look more natural following a
+      lot of operations that modified the tree.
+
+
+   .. py:method:: index(element)
+
+      Find the index of a child by identity, not value.
+
+      Avoids issues with tag.contents.index(element) getting the
+      index of equal elements.
+
+      :param element: Look for this PageElement in `self.contents`.
+
+
+   .. py:method:: get(key, default=None)
+
+      Returns the value of the 'key' attribute for the tag, or
+      the value given for 'default' if it doesn't have that
+      attribute.
+
+
+   .. py:method:: get_attribute_list(key, default=None)
+
+      The same as get(), but always returns a list.
+
+      :param key: The attribute to look for.
+      :param default: Use this value if the attribute is not present
+          on this PageElement.
+      :return: A list of values, probably containing only a single
+          value.
+
+
+   .. py:method:: has_attr(key)
+
+      Does this PageElement have an attribute with the given name?
+
+
+   .. py:method:: __hash__()
+
+      Return hash(self).
+
+
+   .. py:method:: __getitem__(key)
+
+      tag[key] returns the value of the 'key' attribute for the Tag,
+      and throws an exception if it's not there.
+
+
+   .. py:method:: __iter__()
+
+      Iterating over a Tag iterates over its contents.
+
+
+   .. py:method:: __len__()
+
+      The length of a Tag is the length of its list of contents.
+
+
+   .. py:method:: __contains__(x)
+
+
+   .. py:method:: __bool__()
+
+      A tag is non-None even if it has no contents.
+
+
+   .. py:method:: __setitem__(key, value)
+
+      Setting tag[key] sets the value of the 'key' attribute for the
+      tag.
+
+
+   .. py:method:: __delitem__(key)
+
+      Deleting tag[key] deletes all 'key' attributes for the tag.
+
+
+   .. py:method:: __call__(*args, **kwargs)
+
+      Calling a Tag like a function is the same as calling its
+      find_all() method. Eg. tag('a') returns a list of all the A tags
+      found within this tag.
+
+
+   .. py:method:: __getattr__(tag)
+
+      Calling tag.subtag is the same as calling tag.find(name="subtag")
+
+
+   .. py:method:: __eq__(other)
+
+      Returns true iff this Tag has the same name, the same attributes,
+      and the same contents (recursively) as `other`.
+
+
+   .. py:method:: __ne__(other)
+
+      Returns true iff this Tag is not identical to `other`,
+      as defined in __eq__.
+
+
+   .. py:method:: __repr__(encoding='unicode-escape')
+
+      Renders this PageElement as a string.
+
+      :param encoding: The encoding to use (Python 2 only).
+          TODO: This is now ignored and a warning should be issued
+          if a value is provided.
+      :return: A (Unicode) string.
+
+
+   .. py:method:: __unicode__()
+
+      Renders this PageElement as a Unicode string.
+
+
+   .. py:method:: encode(encoding=DEFAULT_OUTPUT_ENCODING, indent_level=None, formatter='minimal', errors='xmlcharrefreplace')
+
+      Render a bytestring representation of this PageElement and its
+      contents.
+
+      :param encoding: The destination encoding.
+      :param indent_level: Each line of the rendering will be
+         indented this many levels. (The formatter decides what a
+         'level' means in terms of spaces or other characters
+         output.) Used internally in recursive calls while
+         pretty-printing.
+      :param formatter: A Formatter object, or a string naming one of
+          the standard formatters.
+      :param errors: An error handling strategy such as
+          'xmlcharrefreplace'. This value is passed along into
+          encode() and its value should be one of the constants
+          defined by Python.
+      :return: A bytestring.
+
+
+
+   .. py:method:: decode(indent_level=None, eventual_encoding=DEFAULT_OUTPUT_ENCODING, formatter='minimal', iterator=None)
+
+
+   .. py:method:: _event_stream(iterator=None)
+
+      Yield a sequence of events that can be used to reconstruct the DOM
+      for this element.
+
+      This lets us recreate the nested structure of this element
+      (e.g. when formatting it as a string) without using recursive
+      method calls.
+
+      This is similar in concept to the SAX API, but it's a simpler
+      interface designed for internal use. The events are different
+      from SAX and the arguments associated with the events are Tags
+      and other Beautiful Soup objects.
+
+      :param iterator: An alternate iterator to use when traversing
+       the tree.
+
+
+   .. py:method:: _indent_string(s, indent_level, formatter, indent_before, indent_after)
+
+      Add indentation whitespace before and/or after a string.
+
+      :param s: The string to amend with whitespace.
+      :param indent_level: The indentation level; affects how much
+         whitespace goes before the string.
+      :param indent_before: Whether or not to add whitespace
+         before the string.
+      :param indent_after: Whether or not to add whitespace
+         (a newline) after the string.
+
+
+   .. py:method:: _format_tag(eventual_encoding, formatter, opening)
+
+
+   .. py:method:: _should_pretty_print(indent_level=1)
+
+      Should this tag be pretty-printed?
+
+      Most of them should, but some (such as <pre> in HTML
+      documents) should not.
+
+
+   .. py:method:: prettify(encoding=None, formatter='minimal')
+
+      Pretty-print this PageElement as a string.
+
+      :param encoding: The eventual encoding of the string. If this is None,
+          a Unicode string will be returned.
+      :param formatter: A Formatter object, or a string naming one of
+          the standard formatters.
+      :return: A Unicode string (if encoding==None) or a bytestring
+          (otherwise).
+
+
+   .. py:method:: decode_contents(indent_level=None, eventual_encoding=DEFAULT_OUTPUT_ENCODING, formatter='minimal')
+
+      Renders the contents of this tag as a Unicode string.
+
+      :param indent_level: Each line of the rendering will be
+         indented this many levels. (The formatter decides what a
+         'level' means in terms of spaces or other characters
+         output.) Used internally in recursive calls while
+         pretty-printing.
+
+      :param eventual_encoding: The tag is destined to be
+         encoded into this encoding. decode_contents() is _not_
+         responsible for performing that encoding. This information
+         is passed in so that it can be substituted in if the
+         document contains a <META> tag that mentions the document's
+         encoding.
+
+      :param formatter: A Formatter object, or a string naming one of
+          the standard Formatters.
+
+
+
+   .. py:method:: encode_contents(indent_level=None, encoding=DEFAULT_OUTPUT_ENCODING, formatter='minimal')
+
+      Renders the contents of this PageElement as a bytestring.
+
+      :param indent_level: Each line of the rendering will be
+         indented this many levels. (The formatter decides what a
+         'level' means in terms of spaces or other characters
+         output.) Used internally in recursive calls while
+         pretty-printing.
+
+      :param eventual_encoding: The bytestring will be in this encoding.
+
+      :param formatter: A Formatter object, or a string naming one of
+          the standard Formatters.
+
+      :return: A bytestring.
+
+
+   .. py:method:: renderContents(encoding=DEFAULT_OUTPUT_ENCODING, prettyPrint=False, indentLevel=0)
+
+      Deprecated method for BS3 compatibility.
+
+
+   .. py:method:: find(name=None, attrs={}, recursive=True, string=None, **kwargs)
+
+      Look in the children of this PageElement and find the first
+      PageElement that matches the given criteria.
+
+      All find_* methods take a common set of arguments. See the online
+      documentation for detailed explanations.
+
+      :param name: A filter on tag name.
+      :param attrs: A dictionary of filters on attribute values.
+      :param recursive: If this is True, find() will perform a
+          recursive search of this PageElement's children. Otherwise,
+          only the direct children will be considered.
+      :param limit: Stop looking after finding this many results.
+      :kwargs: A dictionary of filters on attribute values.
+      :return: A PageElement.
+      :rtype: bs4.element.Tag | bs4.element.NavigableString
+
+
+   .. py:method:: find_all(name=None, attrs={}, recursive=True, string=None, limit=None, **kwargs)
+
+      Look in the children of this PageElement and find all
+      PageElements that match the given criteria.
+
+      All find_* methods take a common set of arguments. See the online
+      documentation for detailed explanations.
+
+      :param name: A filter on tag name.
+      :param attrs: A dictionary of filters on attribute values.
+      :param recursive: If this is True, find_all() will perform a
+          recursive search of this PageElement's children. Otherwise,
+          only the direct children will be considered.
+      :param limit: Stop looking after finding this many results.
+      :kwargs: A dictionary of filters on attribute values.
+      :return: A ResultSet of PageElements.
+      :rtype: bs4.element.ResultSet
+
+
+   .. py:method:: select_one(selector, namespaces=None, **kwargs)
+
+      Perform a CSS selection operation on the current element.
+
+      :param selector: A CSS selector.
+
+      :param namespaces: A dictionary mapping namespace prefixes
+         used in the CSS selector to namespace URIs. By default,
+         Beautiful Soup will use the prefixes it encountered while
+         parsing the document.
+
+      :param kwargs: Keyword arguments to be passed into Soup Sieve's
+         soupsieve.select() method.
+
+      :return: A Tag.
+      :rtype: bs4.element.Tag
+
+
+   .. py:method:: select(selector, namespaces=None, limit=None, **kwargs)
+
+      Perform a CSS selection operation on the current element.
+
+      This uses the SoupSieve library.
+
+      :param selector: A string containing a CSS selector.
+
+      :param namespaces: A dictionary mapping namespace prefixes
+         used in the CSS selector to namespace URIs. By default,
+         Beautiful Soup will use the prefixes it encountered while
+         parsing the document.
+
+      :param limit: After finding this number of results, stop looking.
+
+      :param kwargs: Keyword arguments to be passed into SoupSieve's
+         soupsieve.select() method.
+
+      :return: A ResultSet of Tags.
+      :rtype: bs4.element.ResultSet
+
+
+   .. py:method:: childGenerator()
+
+      Deprecated generator.
+
+
+   .. py:method:: recursiveChildGenerator()
+
+      Deprecated generator.
+
+
+   .. py:method:: has_key(key)
+
+      Deprecated method. This was kind of misleading because has_key()
+      (attributes) was different from __in__ (contents).
+
+      has_key() is gone in Python 3, anyway.
+
+
+
+.. py:class:: DetectsXMLParsedAsHTML
+
+
+   Bases: :py:obj:`object`
+
+   A mixin class for any class (a TreeBuilder, or some class used by a
+   TreeBuilder) that's in a position to detect whether an XML
+   document is being incorrectly parsed as HTML, and issue an
+   appropriate warning.
+
+   This requires being able to observe an incoming processing
+   instruction that might be an XML declaration, and also able to
+   observe tags as they're opened. If you can't do that for a given
+   TreeBuilder, there's a less reliable implementation based on
+   examining the raw markup.
+
+   .. py:attribute:: LOOKS_LIKE_HTML
+
+      
+
+   .. py:attribute:: LOOKS_LIKE_HTML_B
+
+      
+
+   .. py:attribute:: XML_PREFIX
+      :value: '<?xml'
+
+      
+
+   .. py:attribute:: XML_PREFIX_B
+      :value: b'<?xml'
+
+      
+
+   .. py:method:: warn_if_markup_looks_like_xml(markup)
+      :classmethod:
+
+      Perform a check on some markup to see if it looks like XML
+      that's not XHTML. If so, issue a warning.
+
+      This is much less reliable than doing the check while parsing,
+      but some of the tree builders can't do that.
+
+      :return: True if the markup looks like non-XHTML XML, False
+      otherwise.
+
+
+   .. py:method:: _warn()
+      :classmethod:
+
+      Issue a warning about XML being parsed as HTML.
+
+
+   .. py:method:: _initialize_xml_detector()
+
+      Call this method before parsing a document.
+
+
+   .. py:method:: _document_might_be_xml(processing_instruction)
+
+      Call this method when encountering an XML declaration, or a
+      "processing instruction" that might be an XML declaration.
+
+
+   .. py:method:: _root_tag_encountered(name)
+
+      Call this when you encounter the document's root tag.
+
+      This is where we actually check whether an XML document is
+      being incorrectly parsed as HTML, and issue the warning.
+
+
+
+.. py:exception:: XMLParsedAsHTMLWarning
+
+
+   Bases: :py:obj:`UserWarning`
+
+   The warning issued when an HTML parser is used to parse
+   XML that is not XHTML.
+
+   .. py:attribute:: MESSAGE
+      :value: "It looks like you're parsing an XML document using an HTML parser. If this really is an HTML..."
+
+      
+
+
+.. py:data:: default_builder
+
+   
+
+.. py:data:: SOUP_SIEVE_PRESENT
+   :value: True
+
+   
+
+.. py:data:: HTML5LIB_PRESENT
+   :value: True
+
+   
+
+.. py:data:: LXML_PRESENT
+   :value: True
+
+   
+
+.. py:data:: BAD_DOCUMENT
+   :value: Multiline-String
+
+    .. raw:: html
+
+        <details><summary>Show Value</summary>
+
+    .. code-block:: python
+
+        """A bare string
+        <!DOCTYPE xsl:stylesheet SYSTEM "htmlent.dtd">
+        <!DOCTYPE xsl:stylesheet PUBLIC "htmlent.dtd">
+        <div><![CDATA[A CDATA section where it doesn't belong]]></div>
+        <div><svg><![CDATA[HTML5 does allow CDATA sections in SVG]]></svg></div>
+        <div>A <meta> tag</div>
+        <div>A <br> tag that supposedly has contents.</br></div>
+        <div>AT&T</div>
+        <div><textarea>Within a textarea, markup like <b> tags and <&<&amp; should be treated as literal</textarea></div>
+        <div><script>if (i < 2) { alert("<b>Markup within script tags should be treated as literal.</b>"); }</script></div>
+        <div>This numeric entity is missing the final semicolon: <x t="pi&#241ata"></div>
+        <div><a href="http://example.com/</a> that attribute value never got closed</div>
+        <div><a href="foo</a>, </a><a href="bar">that attribute value was closed by the subsequent tag</a></div>
+        <! This document starts with a bogus declaration ><div>a</div>
+        <div>This document contains <!an incomplete declaration <div>(do you see it?)</div>
+        <div>This document ends with <!an incomplete declaration
+        <div><a style={height:21px;}>That attribute value was bogus</a></div>
+        <! DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">The doctype is invalid because it contains extra whitespace
+        <div><table><td nowrap>That boolean attribute had no value</td></table></div>
+        <div>Here's a nonexistent entity: &#foo; (do you see it?)</div>
+        <div>This document ends before the entity finishes: &gt
+        <div><p>Paragraphs shouldn't contain block display elements, but this one does: <dl><dt>you see?</dt></p>
+        <b b="20" a="1" b="10" a="2" a="3" a="4">Multiple values for the same attribute.</b>
+        <div><table><tr><td>Here's a table</td></tr></table></div>
+        <div><table id="1"><tr><td>Here's a nested table:<table id="2"><tr><td>foo</td></tr></table></td></div>
+        <div>This tag contains nothing but whitespace: <b>    </b></div>
+        <div><blockquote><p><b>This p tag is cut off by</blockquote></p>the end of the blockquote tag</div>
+        <div><table><div>This table contains bare markup</div></table></div>
+        <div><div id="1">
+         <a href="link1">This link is never closed.
+        </div>
+        <div id="2">
+         <div id="3">
+           <a href="link2">This link is closed.</a>
+          </div>
+        </div></div>
+        <div>This document contains a <!DOCTYPE surprise>surprise doctype</div>
+        <div><a><B><Cd><EFG>Mixed case tags are folded to lowercase</efg></CD></b></A></div>
+        <div><our☃>Tag name contains Unicode characters</our☃></div>
+        <div><a ☃="snowman">Attribute name contains Unicode characters</a></div>
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        """
+
+    .. raw:: html
+
+        </details>
+
+   
+
+.. py:class:: SoupTest
+
+
+   Bases: :py:obj:`object`
+
+   .. py:property:: default_builder
+
+
+   .. py:attribute:: assertSoupEquals
+
+      
+
+   .. py:method:: soup(markup, **kwargs)
+
+      Build a Beautiful Soup object from markup.
+
+
+   .. py:method:: document_for(markup, **kwargs)
+
+      Turn an HTML fragment into a document.
+
+      The details depend on the builder.
+
+
+   .. py:method:: assert_soup(to_parse, compare_parsed_to=None)
+
+      Parse some markup using Beautiful Soup and verify that
+      the output markup is as expected.
+
+
+   .. py:method:: assertConnectedness(element)
+
+      Ensure that next_element and previous_element are properly
+      set for all descendants of the given element.
+
+
+   .. py:method:: linkage_validator(el, _recursive_call=False)
+
+      Ensure proper linkage throughout the document.
+
+
+   .. py:method:: assert_selects(tags, should_match)
+
+      Make sure that the given tags have the correct text.
+
+      This is used in tests that define a bunch of tags, each
+      containing a single string, and then select certain strings by
+      some mechanism.
+
+
+   .. py:method:: assert_selects_ids(tags, should_match)
+
+      Make sure that the given tags have the correct IDs.
+
+      This is used in tests that define a bunch of tags, each
+      containing a single string, and then select certain strings by
+      some mechanism.
+
+
+
+.. py:class:: TreeBuilderSmokeTest
+
+
+   Bases: :py:obj:`object`
+
+   .. py:method:: test_attribute_not_multi_valued(multi_valued_attributes)
+
+
+   .. py:method:: test_attribute_multi_valued(multi_valued_attributes)
+
+
+   .. py:method:: test_invalid_doctype()
+
+
+
+.. py:class:: HTMLTreeBuilderSmokeTest
+
+
+   Bases: :py:obj:`TreeBuilderSmokeTest`
+
+   A basic test of a treebuilder's competence.
+
+   Any HTML treebuilder, present or future, should be able to pass
+   these tests. With invalid markup, there's room for interpretation,
+   and different parsers can handle it differently. But with the
+   markup in these tests, there's not much room for interpretation.
+
+   .. py:method:: test_empty_element_tags()
+
+      Verify that all HTML4 and HTML5 empty element (aka void element) tags
+      are handled correctly.
+
+
+   .. py:method:: test_special_string_containers()
+
+
+   .. py:method:: test_pickle_and_unpickle_identity()
+
+
+   .. py:method:: assertDoctypeHandled(doctype_fragment)
+
+      Assert that a given doctype string is handled correctly.
+
+
+   .. py:method:: _document_with_doctype(doctype_fragment, doctype_string='DOCTYPE')
+
+      Generate and parse a document with the given doctype.
+
+
+   .. py:method:: test_normal_doctypes()
+
+      Make sure normal, everyday HTML doctypes are handled correctly.
+
+
+   .. py:method:: test_empty_doctype()
+
+
+   .. py:method:: test_mixed_case_doctype()
+
+
+   .. py:method:: test_public_doctype_with_url()
+
+
+   .. py:method:: test_system_doctype()
+
+
+   .. py:method:: test_namespaced_system_doctype()
+
+
+   .. py:method:: test_namespaced_public_doctype()
+
+
+   .. py:method:: test_real_xhtml_document()
+
+      A real XHTML document should come out more or less the same as it went in.
+
+
+   .. py:method:: test_namespaced_html()
+
+
+   .. py:method:: test_detect_xml_parsed_as_html()
+
+
+   .. py:method:: test_processing_instruction()
+
+
+   .. py:method:: test_deepcopy()
+
+      Make sure you can copy the tree builder.
+
+      This is important because the builder is part of a
+      BeautifulSoup object, and we want to be able to copy that.
+
+
+   .. py:method:: test_p_tag_is_never_empty_element()
+
+      A <p> tag is never designated as an empty-element tag.
+
+      Even if the markup shows it as an empty-element tag, it
+      shouldn't be presented that way.
+
+
+   .. py:method:: test_unclosed_tags_get_closed()
+
+      A tag that's not closed by the end of the document should be closed.
+
+      This applies to all tags except empty-element tags.
+
+
+   .. py:method:: test_br_is_always_empty_element_tag()
+
+      A <br> tag is designated as an empty-element tag.
+
+      Some parsers treat <br></br> as one <br/> tag, some parsers as
+      two tags, but it should always be an empty-element tag.
+
+
+   .. py:method:: test_nested_formatting_elements()
+
+
+   .. py:method:: test_double_head()
+
+
+   .. py:method:: test_comment()
+
+
+   .. py:method:: test_preserved_whitespace_in_pre_and_textarea()
+
+      Whitespace must be preserved in <pre> and <textarea> tags,
+      even if that would mean not prettifying the markup.
+
+
+   .. py:method:: test_nested_inline_elements()
+
+      Inline elements can be nested indefinitely.
+
+
+   .. py:method:: test_nested_block_level_elements()
+
+      Block elements can be nested.
+
+
+   .. py:method:: test_correctly_nested_tables()
+
+      One table can go inside another one.
+
+
+   .. py:method:: test_multivalued_attribute_with_whitespace()
+
+
+   .. py:method:: test_deeply_nested_multivalued_attribute()
+
+
+   .. py:method:: test_multivalued_attribute_on_html()
+
+
+   .. py:method:: test_angle_brackets_in_attribute_values_are_escaped()
+
+
+   .. py:method:: test_strings_resembling_character_entity_references()
+
+
+   .. py:method:: test_apos_entity()
+
+
+   .. py:method:: test_entities_in_foreign_document_encoding()
+
+
+   .. py:method:: test_entities_in_attributes_converted_to_unicode()
+
+
+   .. py:method:: test_entities_in_text_converted_to_unicode()
+
+
+   .. py:method:: test_quot_entity_converted_to_quotation_mark()
+
+
+   .. py:method:: test_out_of_range_entity()
+
+
+   .. py:method:: test_multipart_strings()
+
+      Mostly to prevent a recurrence of a bug in the html5lib treebuilder.
+
+
+   .. py:method:: test_empty_element_tags()
+
+      Verify consistent handling of empty-element tags,
+      no matter how they come in through the markup.
+
+
+   .. py:method:: test_head_tag_between_head_and_body()
+
+      Prevent recurrence of a bug in the html5lib treebuilder.
+
+
+   .. py:method:: test_multiple_copies_of_a_tag()
+
+      Prevent recurrence of a bug in the html5lib treebuilder.
+
+
+   .. py:method:: test_basic_namespaces()
+
+      Parsers don't need to *understand* namespaces, but at the
+      very least they should not choke on namespaces or lose
+      data.
+
+
+   .. py:method:: test_multivalued_attribute_value_becomes_list()
+
+
+   .. py:method:: test_can_parse_unicode_document()
+
+
+   .. py:method:: test_soupstrainer()
+
+      Parsers should be able to work with SoupStrainers.
+
+
+   .. py:method:: test_single_quote_attribute_values_become_double_quotes()
+
+
+   .. py:method:: test_attribute_values_with_nested_quotes_are_left_alone()
+
+
+   .. py:method:: test_attribute_values_with_double_nested_quotes_get_quoted()
+
+
+   .. py:method:: test_ampersand_in_attribute_value_gets_escaped()
+
+
+   .. py:method:: test_escaped_ampersand_in_attribute_value_is_left_alone()
+
+
+   .. py:method:: test_entities_in_strings_converted_during_parsing()
+
+
+   .. py:method:: test_smart_quotes_converted_on_the_way_in()
+
+
+   .. py:method:: test_non_breaking_spaces_converted_on_the_way_in()
+
+
+   .. py:method:: test_entities_converted_on_the_way_out()
+
+
+   .. py:method:: test_real_iso_8859_document()
+
+
+   .. py:method:: test_real_shift_jis_document()
+
+
+   .. py:method:: test_real_hebrew_document()
+
+
+   .. py:method:: test_meta_tag_reflects_current_encoding()
+
+
+   .. py:method:: test_html5_style_meta_tag_reflects_current_encoding()
+
+
+   .. py:method:: test_python_specific_encodings_not_used_in_charset()
+
+
+   .. py:method:: test_tag_with_no_attributes_can_have_attributes_added()
+
+
+   .. py:method:: test_closing_tag_with_no_opening_tag()
+
+
+   .. py:method:: test_worst_case()
+
+      Test the worst case (currently) for linking issues.
+
+
+
+.. py:class:: XMLTreeBuilderSmokeTest
+
+
+   Bases: :py:obj:`TreeBuilderSmokeTest`
+
+   .. py:method:: test_pickle_and_unpickle_identity()
+
+
+   .. py:method:: test_docstring_generated()
+
+
+   .. py:method:: test_xml_declaration()
+
+
+   .. py:method:: test_python_specific_encodings_not_used_in_xml_declaration()
+
+
+   .. py:method:: test_processing_instruction()
+
+
+   .. py:method:: test_real_xhtml_document()
+
+      A real XHTML document should come out *exactly* the same as it went in.
+
+
+   .. py:method:: test_nested_namespaces()
+
+
+   .. py:method:: test_formatter_processes_script_tag_for_xml_documents()
+
+
+   .. py:method:: test_can_parse_unicode_document()
+
+
+   .. py:method:: test_can_parse_unicode_document_begining_with_bom()
+
+
+   .. py:method:: test_popping_namespaced_tag()
+
+
+   .. py:method:: test_docstring_includes_correct_encoding()
+
+
+   .. py:method:: test_large_xml_document()
+
+      A large XML document should come out the same as it went in.
+
+
+   .. py:method:: test_tags_are_empty_element_if_and_only_if_they_are_empty()
+
+
+   .. py:method:: test_namespaces_are_preserved()
+
+
+   .. py:method:: test_closing_namespaced_tag()
+
+
+   .. py:method:: test_namespaced_attributes()
+
+
+   .. py:method:: test_namespaced_attributes_xml_namespace()
+
+
+   .. py:method:: test_find_by_prefixed_name()
+
+
+   .. py:method:: test_copy_tag_preserves_namespace()
+
+
+   .. py:method:: test_worst_case()
+
+      Test the worst case (currently) for linking issues.
+
+
+
+.. py:class:: HTML5TreeBuilderSmokeTest
+
+
+   Bases: :py:obj:`HTMLTreeBuilderSmokeTest`
+
+   Smoke test for a tree builder that supports HTML5.
+
+   .. py:method:: test_real_xhtml_document()
+
+      A real XHTML document should come out more or less the same as it went in.
+
+
+   .. py:method:: test_html_tags_have_namespace()
+
+
+   .. py:method:: test_svg_tags_have_namespace()
+
+
+   .. py:method:: test_mathml_tags_have_namespace()
+
+
+   .. py:method:: test_xml_declaration_becomes_comment()
+
+
+

@@ -1,0 +1,61 @@
+:py:mod:`bs4.tests.test_element`
+================================
+
+.. py:module:: bs4.tests.test_element
+
+.. autoapi-nested-parse::
+
+   Tests of classes in element.py.
+
+   The really big classes -- Tag, PageElement, and NavigableString --
+   are tested in separate files.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_element.TestNamedspacedAttribute
+   bs4.tests.test_element.TestAttributeValueWithCharsetSubstitution
+
+
+
+
+.. py:class:: TestNamedspacedAttribute
+
+
+   Bases: :py:obj:`object`
+
+   .. py:method:: test_name_may_be_none_or_missing()
+
+
+   .. py:method:: test_namespace_may_be_none_or_missing()
+
+
+   .. py:method:: test_attribute_is_equivalent_to_colon_separated_string()
+
+
+   .. py:method:: test_attributes_are_equivalent_if_prefix_and_name_identical()
+
+
+
+.. py:class:: TestAttributeValueWithCharsetSubstitution
+
+
+   Bases: :py:obj:`object`
+
+   Certain attributes are designed to have the charset of the
+   final document substituted into their value.
+
+   .. py:method:: test_content_meta_attribute_value()
+
+
+   .. py:method:: test_content_meta_attribute_value()
+
+
+

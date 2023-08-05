@@ -1,0 +1,97 @@
+:py:mod:`bs4.builder._html5lib`
+===============================
+
+.. py:module:: bs4.builder._html5lib
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.builder._html5lib.HTML5TreeBuilder
+
+
+
+
+.. py:class:: HTML5TreeBuilder(multi_valued_attributes=USE_DEFAULT, preserve_whitespace_tags=USE_DEFAULT, store_line_numbers=USE_DEFAULT, string_containers=USE_DEFAULT)
+
+
+   Bases: :py:obj:`bs4.builder.HTMLTreeBuilder`
+
+   Use html5lib to build a tree.
+
+   Note that this TreeBuilder does not support some features common
+   to HTML TreeBuilders. Some of these features could theoretically
+   be implemented, but at the very least it's quite difficult,
+   because html5lib moves the parse tree around as it's being built.
+
+   * This TreeBuilder doesn't use different subclasses of NavigableString
+     based on the name of the tag in which the string was found.
+
+   * You can't use a SoupStrainer to parse only part of a document.
+
+   .. py:attribute:: NAME
+      :value: 'html5lib'
+
+      
+
+   .. py:attribute:: features
+
+      
+
+   .. py:attribute:: TRACKS_LINE_NUMBERS
+      :value: True
+
+      
+
+   .. py:method:: prepare_markup(markup, user_specified_encoding, document_declared_encoding=None, exclude_encodings=None)
+
+      Run any preliminary steps necessary to make incoming markup
+      acceptable to the parser.
+
+      :param markup: Some markup -- probably a bytestring.
+      :param user_specified_encoding: The user asked to try this encoding.
+      :param document_declared_encoding: The markup itself claims to be
+          in this encoding. NOTE: This argument is not used by the
+          calling code and can probably be removed.
+      :param exclude_encodings: The user asked _not_ to try any of
+          these encodings.
+
+      :yield: A series of 4-tuples:
+       (markup, encoding, declared encoding,
+        has undergone character replacement)
+
+       Each 4-tuple represents a strategy for converting the
+       document to Unicode and parsing it. Each strategy will be tried 
+       in turn.
+
+       By default, the only strategy is to parse the markup
+       as-is. See `LXMLTreeBuilderForXML` and
+       `HTMLParserTreeBuilder` for implementations that take into
+       account the quirks of particular parsers.
+
+
+   .. py:method:: feed(markup)
+
+      Run some incoming markup through some parsing process,
+      populating the `BeautifulSoup` object in self.soup.
+
+      This method is not implemented in TreeBuilder; it must be
+      implemented in subclasses.
+
+      :return: None.
+
+
+   .. py:method:: create_treebuilder(namespaceHTMLElements)
+
+
+   .. py:method:: test_fragment_to_document(fragment)
+
+      See `TreeBuilder`.
+
+
+

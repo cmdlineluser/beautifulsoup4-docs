@@ -1,0 +1,141 @@
+:py:mod:`bs4.tests.test_dammit`
+===============================
+
+.. py:module:: bs4.tests.test_dammit
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_dammit.TestUnicodeDammit
+   bs4.tests.test_dammit.TestEncodingDetector
+   bs4.tests.test_dammit.TestEntitySubstitution
+
+
+
+
+.. py:class:: TestUnicodeDammit
+
+
+   Bases: :py:obj:`object`
+
+   Standalone tests of UnicodeDammit.
+
+   .. py:method:: test_unicode_input()
+
+
+   .. py:method:: test_smart_quotes_to(smart_quotes_to, expect_converted)
+
+      Verify the functionality of the smart_quotes_to argument
+      to the UnicodeDammit constructor.
+
+
+   .. py:method:: test_detect_utf8()
+
+
+   .. py:method:: test_convert_hebrew()
+
+
+   .. py:method:: test_dont_see_smart_quotes_where_there_are_none()
+
+
+   .. py:method:: test_ignore_inappropriate_codecs()
+
+
+   .. py:method:: test_ignore_invalid_codecs()
+
+
+   .. py:method:: test_exclude_encodings()
+
+
+
+.. py:class:: TestEncodingDetector
+
+
+   Bases: :py:obj:`object`
+
+   .. py:method:: test_encoding_detector_replaces_junk_in_encoding_name_with_replacement_character()
+
+
+   .. py:method:: test_detect_html5_style_meta_tag()
+
+
+   .. py:method:: test_last_ditch_entity_replacement()
+
+
+   .. py:method:: test_byte_order_mark_removed()
+
+
+   .. py:method:: test_known_definite_versus_user_encodings()
+
+
+   .. py:method:: test_deprecated_override_encodings()
+
+
+   .. py:method:: test_detwingle()
+
+
+   .. py:method:: test_detwingle_ignores_multibyte_characters()
+
+
+   .. py:method:: test_find_declared_encoding()
+
+
+
+.. py:class:: TestEntitySubstitution
+
+
+   Bases: :py:obj:`object`
+
+   Standalone tests of the EntitySubstitution class.
+
+   .. py:method:: setup_method()
+
+
+   .. py:method:: test_substitute_html(original, substituted)
+
+
+   .. py:method:: test_html5_entity()
+
+
+   .. py:method:: test_html5_entity_with_variation_selector()
+
+
+   .. py:method:: test_xml_converstion_includes_no_quotes_if_make_quoted_attribute_is_false()
+
+
+   .. py:method:: test_xml_attribute_quoting_normally_uses_double_quotes()
+
+
+   .. py:method:: test_xml_attribute_quoting_uses_single_quotes_when_value_contains_double_quotes()
+
+
+   .. py:method:: test_xml_attribute_quoting_escapes_single_quotes_when_value_contains_both_single_and_double_quotes()
+
+
+   .. py:method:: test_xml_quotes_arent_escaped_when_value_is_not_being_quoted()
+
+
+   .. py:method:: test_xml_quoting_handles_angle_brackets()
+
+
+   .. py:method:: test_xml_quoting_handles_ampersands()
+
+
+   .. py:method:: test_xml_quoting_including_ampersands_when_they_are_part_of_an_entity()
+
+
+   .. py:method:: test_xml_quoting_ignoring_ampersands_when_they_are_part_of_an_entity()
+
+
+   .. py:method:: test_quotes_not_html_substituted()
+
+      There's no need to do this except inside attribute values.
+
+
+

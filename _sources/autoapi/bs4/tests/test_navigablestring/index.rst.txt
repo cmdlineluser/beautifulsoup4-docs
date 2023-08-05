@@ -1,0 +1,60 @@
+:py:mod:`bs4.tests.test_navigablestring`
+========================================
+
+.. py:module:: bs4.tests.test_navigablestring
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_navigablestring.TestNavigableString
+   bs4.tests.test_navigablestring.TestNavigableStringSubclasses
+
+
+
+
+.. py:class:: TestNavigableString
+
+
+   Bases: :py:obj:`bs4.tests.SoupTest`
+
+   .. py:method:: test_text_acquisition_methods()
+
+
+   .. py:method:: test_string_has_immutable_name_property()
+
+
+
+.. py:class:: TestNavigableStringSubclasses
+
+
+   Bases: :py:obj:`bs4.tests.SoupTest`
+
+   .. py:method:: test_cdata()
+
+
+   .. py:method:: test_cdata_is_never_formatted()
+
+      Text inside a CData object is passed into the formatter.
+
+      But the return value is ignored.
+
+
+   .. py:method:: test_doctype_ends_in_newline()
+
+
+   .. py:method:: test_declaration()
+
+
+   .. py:method:: test_default_string_containers()
+
+
+   .. py:method:: test_ruby_strings()
+
+
+

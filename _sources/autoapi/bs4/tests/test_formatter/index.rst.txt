@@ -1,0 +1,40 @@
+:py:mod:`bs4.tests.test_formatter`
+==================================
+
+.. py:module:: bs4.tests.test_formatter
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_formatter.TestFormatter
+
+
+
+
+.. py:class:: TestFormatter
+
+
+   Bases: :py:obj:`bs4.tests.SoupTest`
+
+   .. py:method:: test_default_attributes()
+
+
+   .. py:method:: test_sort_attributes()
+
+
+   .. py:method:: test_empty_attributes_are_booleans()
+
+
+   .. py:method:: test_indent(indent, expect)
+
+
+   .. py:method:: test_default_indent_value()
+
+
+

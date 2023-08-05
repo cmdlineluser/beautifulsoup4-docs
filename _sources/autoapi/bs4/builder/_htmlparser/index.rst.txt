@@ -1,0 +1,83 @@
+:py:mod:`bs4.builder._htmlparser`
+=================================
+
+.. py:module:: bs4.builder._htmlparser
+
+.. autoapi-nested-parse::
+
+   Use the HTMLParser library to parse HTML files that aren't too bad.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.builder._htmlparser.HTMLParserTreeBuilder
+
+
+
+
+.. py:class:: HTMLParserTreeBuilder(parser_args=None, parser_kwargs=None, **kwargs)
+
+
+   Bases: :py:obj:`bs4.builder.HTMLTreeBuilder`
+
+   A Beautiful soup `TreeBuilder` that uses the `HTMLParser` parser,
+   found in the Python standard library.
+
+   .. py:attribute:: is_xml
+      :value: False
+
+      
+
+   .. py:attribute:: picklable
+      :value: True
+
+      
+
+   .. py:attribute:: NAME
+
+      
+
+   .. py:attribute:: features
+
+      
+
+   .. py:attribute:: TRACKS_LINE_NUMBERS
+      :value: True
+
+      
+
+   .. py:method:: prepare_markup(markup, user_specified_encoding=None, document_declared_encoding=None, exclude_encodings=None)
+
+      Run any preliminary steps necessary to make incoming markup
+      acceptable to the parser.
+
+      :param markup: Some markup -- probably a bytestring.
+      :param user_specified_encoding: The user asked to try this encoding.
+      :param document_declared_encoding: The markup itself claims to be
+          in this encoding.
+      :param exclude_encodings: The user asked _not_ to try any of
+          these encodings.
+
+      :yield: A series of 4-tuples:
+       (markup, encoding, declared encoding,
+        has undergone character replacement)
+
+       Each 4-tuple represents a strategy for converting the
+       document to Unicode and parsing it. Each strategy will be tried 
+       in turn.
+
+
+   .. py:method:: feed(markup)
+
+      Run some incoming markup through some parsing process,
+      populating the `BeautifulSoup` object in self.soup.
+
+
+

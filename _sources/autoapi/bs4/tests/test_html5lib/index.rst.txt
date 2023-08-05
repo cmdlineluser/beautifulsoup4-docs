@@ -1,0 +1,97 @@
+:py:mod:`bs4.tests.test_html5lib`
+=================================
+
+.. py:module:: bs4.tests.test_html5lib
+
+.. autoapi-nested-parse::
+
+   Tests to ensure that the html5lib tree builder generates good trees.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_html5lib.TestHTML5LibBuilder
+
+
+
+
+.. py:class:: TestHTML5LibBuilder
+
+
+   Bases: :py:obj:`bs4.tests.SoupTest`, :py:obj:`bs4.tests.HTML5TreeBuilderSmokeTest`
+
+   See ``HTML5TreeBuilderSmokeTest``.
+
+   .. py:property:: default_builder
+
+
+   .. py:method:: test_soupstrainer()
+
+      Parsers should be able to work with SoupStrainers.
+
+
+   .. py:method:: test_correctly_nested_tables()
+
+      html5lib inserts <tbody> tags where other parsers don't.
+
+
+   .. py:method:: test_xml_declaration_followed_by_doctype()
+
+
+   .. py:method:: test_reparented_markup()
+
+
+   .. py:method:: test_reparented_markup_ends_with_whitespace()
+
+
+   .. py:method:: test_reparented_markup_containing_identical_whitespace_nodes()
+
+      Verify that we keep the two whitespace nodes in this
+      document distinct when reparenting the adjacent <tbody> tags.
+
+
+   .. py:method:: test_reparented_markup_containing_children()
+
+
+   .. py:method:: test_processing_instruction()
+
+      Processing instructions become comments.
+
+
+   .. py:method:: test_cloned_multivalue_node()
+
+
+   .. py:method:: test_foster_parenting()
+
+
+   .. py:method:: test_extraction()
+
+      Test that extraction does not destroy the tree.
+
+      https://bugs.launchpad.net/beautifulsoup/+bug/1782928
+
+
+   .. py:method:: test_empty_comment()
+
+      Test that empty comment does not break structure.
+
+      https://bugs.launchpad.net/beautifulsoup/+bug/1806598
+
+
+   .. py:method:: test_tracking_line_numbers()
+
+
+   .. py:method:: test_special_string_containers()
+
+
+   .. py:method:: test_html5_attributes()
+
+
+

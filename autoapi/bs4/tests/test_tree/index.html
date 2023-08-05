@@ -1,0 +1,1307 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="bs4.css" href="../../css/index.html" /><link rel="prev" title="bs4.tests.test_tag" href="../test_tag/index.html" />
+
+    <!-- Generated with Sphinx 6.2.1 and Furo 2023.07.26 -->
+        <title>bs4.tests.test_tree - bs4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=369552022d0b975c8e74270ce6eabe0fb7978f24" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">bs4  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">bs4  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of bs4</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../builder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.builder</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of bs4.builder</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../builder/_html5lib/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.builder._html5lib</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../builder/_htmlparser/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.builder._htmlparser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../builder/_lxml/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.builder._lxml</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of bs4.tests</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../test_builder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_builder</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_builder_registry/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_builder_registry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_css/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_css</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_dammit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_dammit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_docs/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_docs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_element/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_element</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_formatter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_formatter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_fuzz/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_fuzz</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_html5lib/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_html5lib</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_htmlparser/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_htmlparser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_lxml/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_lxml</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_navigablestring/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_navigablestring</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_pageelement/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_pageelement</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_soup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_soup</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../test_tag/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_tag</span></code></a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_tree</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../css/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.css</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../dammit/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.dammit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../diagnose/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.diagnose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../element/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.element</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../formatter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.formatter</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-bs4.tests.test_tree">
+<span id="bs4-tests-test-tree"></span><h1><a class="reference internal" href="#module-bs4.tests.test_tree" title="bs4.tests.test_tree"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_tree</span></code></a><a class="headerlink" href="#module-bs4.tests.test_tree" title="Permalink to this heading">#</a></h1>
+<p>Tests for Beautiful Soup’s tree traversal methods.</p>
+<p>The tree traversal methods are the main advantage of using Beautiful
+Soup over just using a parser.</p>
+<p>Different parsers will build different Beautiful Soup trees given the
+same markup, but all Beautiful Soup trees can be traversed with the
+methods tested here.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestFind" title="bs4.tests.test_tree.TestFind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestFind</span></code></a></p></td>
+<td><p>Basic tests of the find() method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestFindAll" title="bs4.tests.test_tree.TestFindAll"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestFindAll</span></code></a></p></td>
+<td><p>Basic tests of the find_all() method.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllBasicNamespaces" title="bs4.tests.test_tree.TestFindAllBasicNamespaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestFindAllBasicNamespaces</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName" title="bs4.tests.test_tree.TestFindAllByName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestFindAllByName</span></code></a></p></td>
+<td><p>Test ways of finding tags by tag name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute" title="bs4.tests.test_tree.TestFindAllByAttribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestFindAllByAttribute</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestSmooth" title="bs4.tests.test_tree.TestSmooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestSmooth</span></code></a></p></td>
+<td><p>Test Tag.smooth.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestIndex" title="bs4.tests.test_tree.TestIndex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestIndex</span></code></a></p></td>
+<td><p>Test Tag.index</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations" title="bs4.tests.test_tree.TestParentOperations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestParentOperations</span></code></a></p></td>
+<td><p>Test navigation and searching through an element's parents.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bs4.tests.test_tree.ProximityTest" title="bs4.tests.test_tree.ProximityTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProximityTest</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestNextOperations" title="bs4.tests.test_tree.TestNextOperations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestNextOperations</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousOperations" title="bs4.tests.test_tree.TestPreviousOperations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestPreviousOperations</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bs4.tests.test_tree.SiblingTest" title="bs4.tests.test_tree.SiblingTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SiblingTest</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestNextSibling" title="bs4.tests.test_tree.TestNextSibling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestNextSibling</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousSibling" title="bs4.tests.test_tree.TestPreviousSibling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestPreviousSibling</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification" title="bs4.tests.test_tree.TestTreeModification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestTreeModification</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#bs4.tests.test_tree.TestDeprecatedArguments" title="bs4.tests.test_tree.TestDeprecatedArguments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestDeprecatedArguments</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFind">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestFind</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestFind" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<p>Basic tests of the find() method.</p>
+<p>find() just calls find_all() with limit=1, so it’s not tested all
+that thouroughly here.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFind.test_find_tag">
+<span class="sig-name descname"><span class="pre">test_find_tag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFind.test_find_tag" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFind.test_unicode_text_find">
+<span class="sig-name descname"><span class="pre">test_unicode_text_find</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFind.test_unicode_text_find" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFind.test_unicode_attribute_find">
+<span class="sig-name descname"><span class="pre">test_unicode_attribute_find</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFind.test_unicode_attribute_find" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFind.test_find_everything">
+<span class="sig-name descname"><span class="pre">test_find_everything</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFind.test_find_everything" title="Permalink to this definition">#</a></dt>
+<dd><p>Test an optimization that finds all tags.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFind.test_find_everything_with_name">
+<span class="sig-name descname"><span class="pre">test_find_everything_with_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFind.test_find_everything_with_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Test an optimization that finds all tags with a given name.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAll">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestFindAll</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAll" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<p>Basic tests of the find_all() method.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAll.test_find_all_text_nodes">
+<span class="sig-name descname"><span class="pre">test_find_all_text_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAll.test_find_all_text_nodes" title="Permalink to this definition">#</a></dt>
+<dd><p>You can search the tree for text nodes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAll.test_find_all_limit">
+<span class="sig-name descname"><span class="pre">test_find_all_limit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAll.test_find_all_limit" title="Permalink to this definition">#</a></dt>
+<dd><p>You can limit the number of items returned by find_all.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAll.test_calling_a_tag_is_calling_findall">
+<span class="sig-name descname"><span class="pre">test_calling_a_tag_is_calling_findall</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAll.test_calling_a_tag_is_calling_findall" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAll.test_find_all_with_self_referential_data_structure_does_not_cause_infinite_recursion">
+<span class="sig-name descname"><span class="pre">test_find_all_with_self_referential_data_structure_does_not_cause_infinite_recursion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAll.test_find_all_with_self_referential_data_structure_does_not_cause_infinite_recursion" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAll.test_find_all_resultset">
+<span class="sig-name descname"><span class="pre">test_find_all_resultset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAll.test_find_all_resultset" title="Permalink to this definition">#</a></dt>
+<dd><p>All find_all calls return a ResultSet</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllBasicNamespaces">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestFindAllBasicNamespaces</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllBasicNamespaces" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllBasicNamespaces.test_find_by_namespaced_name">
+<span class="sig-name descname"><span class="pre">test_find_by_namespaced_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllBasicNamespaces.test_find_by_namespaced_name" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestFindAllByName</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<p>Test ways of finding tags by tag name.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.setup_method">
+<span class="sig-name descname"><span class="pre">setup_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.setup_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_name">
+<span class="sig-name descname"><span class="pre">test_find_all_by_tag_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_name" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.test_find_all_by_name_and_text">
+<span class="sig-name descname"><span class="pre">test_find_all_by_name_and_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_name_and_text" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.test_find_all_on_non_root_element">
+<span class="sig-name descname"><span class="pre">test_find_all_on_non_root_element</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_on_non_root_element" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.test_calling_element_invokes_find_all">
+<span class="sig-name descname"><span class="pre">test_calling_element_invokes_find_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.test_calling_element_invokes_find_all" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_strainer">
+<span class="sig-name descname"><span class="pre">test_find_all_by_tag_strainer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_strainer" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_names">
+<span class="sig-name descname"><span class="pre">test_find_all_by_tag_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_names" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_dict">
+<span class="sig-name descname"><span class="pre">test_find_all_by_tag_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_dict" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_re">
+<span class="sig-name descname"><span class="pre">test_find_all_by_tag_re</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_re" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.test_find_all_with_tags_matching_method">
+<span class="sig-name descname"><span class="pre">test_find_all_with_tags_matching_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_with_tags_matching_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByName.test_find_with_multi_valued_attribute">
+<span class="sig-name descname"><span class="pre">test_find_with_multi_valued_attribute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByName.test_find_with_multi_valued_attribute" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestFindAllByAttribute</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_attribute_name">
+<span class="sig-name descname"><span class="pre">test_find_all_by_attribute_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_attribute_name" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_utf8_attribute_value">
+<span class="sig-name descname"><span class="pre">test_find_all_by_utf8_attribute_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_utf8_attribute_value" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_attribute_dict">
+<span class="sig-name descname"><span class="pre">test_find_all_by_attribute_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_attribute_dict" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_class">
+<span class="sig-name descname"><span class="pre">test_find_all_by_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_class" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_class_when_multiple_classes_present">
+<span class="sig-name descname"><span class="pre">test_find_by_class_when_multiple_classes_present</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_class_when_multiple_classes_present" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_non_dictionary_for_attrs_finds_by_class">
+<span class="sig-name descname"><span class="pre">test_find_all_with_non_dictionary_for_attrs_finds_by_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_non_dictionary_for_attrs_finds_by_class" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_string_for_attrs_finds_multiple_classes">
+<span class="sig-name descname"><span class="pre">test_find_all_with_string_for_attrs_finds_multiple_classes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_string_for_attrs_finds_multiple_classes" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_attribute_soupstrainer">
+<span class="sig-name descname"><span class="pre">test_find_all_by_attribute_soupstrainer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_attribute_soupstrainer" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_missing_attribute">
+<span class="sig-name descname"><span class="pre">test_find_all_with_missing_attribute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_missing_attribute" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_defined_attribute">
+<span class="sig-name descname"><span class="pre">test_find_all_with_defined_attribute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_defined_attribute" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_numeric_attribute">
+<span class="sig-name descname"><span class="pre">test_find_all_with_numeric_attribute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_numeric_attribute" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_list_attribute_values">
+<span class="sig-name descname"><span class="pre">test_find_all_with_list_attribute_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_list_attribute_values" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_regular_expression_attribute_value">
+<span class="sig-name descname"><span class="pre">test_find_all_with_regular_expression_attribute_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_regular_expression_attribute_value" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_name_and_containing_string">
+<span class="sig-name descname"><span class="pre">test_find_by_name_and_containing_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_name_and_containing_string" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_name_and_containing_string_when_string_is_buried">
+<span class="sig-name descname"><span class="pre">test_find_by_name_and_containing_string_when_string_is_buried</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_name_and_containing_string_when_string_is_buried" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_attribute_and_containing_string">
+<span class="sig-name descname"><span class="pre">test_find_by_attribute_and_containing_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_attribute_and_containing_string" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestSmooth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestSmooth</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestSmooth" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<p>Test Tag.smooth.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestSmooth.test_smooth">
+<span class="sig-name descname"><span class="pre">test_smooth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestSmooth.test_smooth" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestIndex">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestIndex</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestIndex" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<p>Test Tag.index</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestIndex.test_index">
+<span class="sig-name descname"><span class="pre">test_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestIndex.test_index" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestParentOperations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestParentOperations</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestParentOperations" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<p>Test navigation and searching through an element’s parents.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestParentOperations.setup_method">
+<span class="sig-name descname"><span class="pre">setup_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestParentOperations.setup_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestParentOperations.test_parent">
+<span class="sig-name descname"><span class="pre">test_parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestParentOperations.test_parent" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestParentOperations.test_parent_of_top_tag_is_soup_object">
+<span class="sig-name descname"><span class="pre">test_parent_of_top_tag_is_soup_object</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestParentOperations.test_parent_of_top_tag_is_soup_object" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestParentOperations.test_soup_object_has_no_parent">
+<span class="sig-name descname"><span class="pre">test_soup_object_has_no_parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestParentOperations.test_soup_object_has_no_parent" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestParentOperations.test_find_parents">
+<span class="sig-name descname"><span class="pre">test_find_parents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestParentOperations.test_find_parents" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestParentOperations.test_find_parent">
+<span class="sig-name descname"><span class="pre">test_find_parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestParentOperations.test_find_parent" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestParentOperations.test_parent_of_text_element">
+<span class="sig-name descname"><span class="pre">test_parent_of_text_element</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestParentOperations.test_parent_of_text_element" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestParentOperations.test_text_element_find_parent">
+<span class="sig-name descname"><span class="pre">test_text_element_find_parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestParentOperations.test_text_element_find_parent" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestParentOperations.test_parent_generator">
+<span class="sig-name descname"><span class="pre">test_parent_generator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestParentOperations.test_parent_generator" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.ProximityTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">ProximityTest</span></span><a class="headerlink" href="#bs4.tests.test_tree.ProximityTest" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.ProximityTest.setup_method">
+<span class="sig-name descname"><span class="pre">setup_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.ProximityTest.setup_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextOperations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestNextOperations</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestNextOperations" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#bs4.tests.test_tree.ProximityTest" title="bs4.tests.test_tree.ProximityTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProximityTest</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextOperations.setup_method">
+<span class="sig-name descname"><span class="pre">setup_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextOperations.setup_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextOperations.test_next">
+<span class="sig-name descname"><span class="pre">test_next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextOperations.test_next" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextOperations.test_next_of_last_item_is_none">
+<span class="sig-name descname"><span class="pre">test_next_of_last_item_is_none</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextOperations.test_next_of_last_item_is_none" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextOperations.test_next_of_root_is_none">
+<span class="sig-name descname"><span class="pre">test_next_of_root_is_none</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextOperations.test_next_of_root_is_none" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextOperations.test_find_all_next">
+<span class="sig-name descname"><span class="pre">test_find_all_next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextOperations.test_find_all_next" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextOperations.test_find_next">
+<span class="sig-name descname"><span class="pre">test_find_next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextOperations.test_find_next" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextOperations.test_find_next_for_text_element">
+<span class="sig-name descname"><span class="pre">test_find_next_for_text_element</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextOperations.test_find_next_for_text_element" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextOperations.test_next_generator">
+<span class="sig-name descname"><span class="pre">test_next_generator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextOperations.test_next_generator" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousOperations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestPreviousOperations</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousOperations" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#bs4.tests.test_tree.ProximityTest" title="bs4.tests.test_tree.ProximityTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProximityTest</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousOperations.setup_method">
+<span class="sig-name descname"><span class="pre">setup_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousOperations.setup_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousOperations.test_previous">
+<span class="sig-name descname"><span class="pre">test_previous</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousOperations.test_previous" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousOperations.test_previous_of_first_item_is_none">
+<span class="sig-name descname"><span class="pre">test_previous_of_first_item_is_none</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousOperations.test_previous_of_first_item_is_none" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousOperations.test_previous_of_root_is_none">
+<span class="sig-name descname"><span class="pre">test_previous_of_root_is_none</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousOperations.test_previous_of_root_is_none" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousOperations.test_find_all_previous">
+<span class="sig-name descname"><span class="pre">test_find_all_previous</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousOperations.test_find_all_previous" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousOperations.test_find_previous">
+<span class="sig-name descname"><span class="pre">test_find_previous</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousOperations.test_find_previous" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousOperations.test_find_previous_for_text_element">
+<span class="sig-name descname"><span class="pre">test_find_previous_for_text_element</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousOperations.test_find_previous_for_text_element" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousOperations.test_previous_generator">
+<span class="sig-name descname"><span class="pre">test_previous_generator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousOperations.test_previous_generator" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.SiblingTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">SiblingTest</span></span><a class="headerlink" href="#bs4.tests.test_tree.SiblingTest" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.SiblingTest.setup_method">
+<span class="sig-name descname"><span class="pre">setup_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.SiblingTest.setup_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextSibling">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestNextSibling</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestNextSibling" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#bs4.tests.test_tree.SiblingTest" title="bs4.tests.test_tree.SiblingTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SiblingTest</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextSibling.setup_method">
+<span class="sig-name descname"><span class="pre">setup_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextSibling.setup_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextSibling.test_next_sibling_of_root_is_none">
+<span class="sig-name descname"><span class="pre">test_next_sibling_of_root_is_none</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextSibling.test_next_sibling_of_root_is_none" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextSibling.test_next_sibling">
+<span class="sig-name descname"><span class="pre">test_next_sibling</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextSibling.test_next_sibling" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextSibling.test_next_sibling_may_not_exist">
+<span class="sig-name descname"><span class="pre">test_next_sibling_may_not_exist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextSibling.test_next_sibling_may_not_exist" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextSibling.test_find_next_sibling">
+<span class="sig-name descname"><span class="pre">test_find_next_sibling</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextSibling.test_find_next_sibling" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextSibling.test_next_siblings">
+<span class="sig-name descname"><span class="pre">test_next_siblings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextSibling.test_next_siblings" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestNextSibling.test_next_sibling_for_text_element">
+<span class="sig-name descname"><span class="pre">test_next_sibling_for_text_element</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestNextSibling.test_next_sibling_for_text_element" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousSibling">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestPreviousSibling</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousSibling" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#bs4.tests.test_tree.SiblingTest" title="bs4.tests.test_tree.SiblingTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SiblingTest</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousSibling.setup_method">
+<span class="sig-name descname"><span class="pre">setup_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousSibling.setup_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling_of_root_is_none">
+<span class="sig-name descname"><span class="pre">test_previous_sibling_of_root_is_none</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling_of_root_is_none" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling">
+<span class="sig-name descname"><span class="pre">test_previous_sibling</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling_may_not_exist">
+<span class="sig-name descname"><span class="pre">test_previous_sibling_may_not_exist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling_may_not_exist" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousSibling.test_find_previous_sibling">
+<span class="sig-name descname"><span class="pre">test_find_previous_sibling</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousSibling.test_find_previous_sibling" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousSibling.test_previous_siblings">
+<span class="sig-name descname"><span class="pre">test_previous_siblings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousSibling.test_previous_siblings" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling_for_text_element">
+<span class="sig-name descname"><span class="pre">test_previous_sibling_for_text_element</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling_for_text_element" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestTreeModification</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_attribute_modification">
+<span class="sig-name descname"><span class="pre">test_attribute_modification</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_attribute_modification" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_new_tag_creation">
+<span class="sig-name descname"><span class="pre">test_new_tag_creation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_new_tag_creation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_append_to_contents_moves_tag">
+<span class="sig-name descname"><span class="pre">test_append_to_contents_moves_tag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_append_to_contents_moves_tag" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_with_returns_thing_that_was_replaced">
+<span class="sig-name descname"><span class="pre">test_replace_with_returns_thing_that_was_replaced</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with_returns_thing_that_was_replaced" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_unwrap_returns_thing_that_was_replaced">
+<span class="sig-name descname"><span class="pre">test_unwrap_returns_thing_that_was_replaced</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_unwrap_returns_thing_that_was_replaced" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_with_and_unwrap_give_useful_exception_when_tag_has_no_parent">
+<span class="sig-name descname"><span class="pre">test_replace_with_and_unwrap_give_useful_exception_when_tag_has_no_parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with_and_unwrap_give_useful_exception_when_tag_has_no_parent" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_tag_with_itself">
+<span class="sig-name descname"><span class="pre">test_replace_tag_with_itself</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_tag_with_itself" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_tag_with_its_parent_raises_exception">
+<span class="sig-name descname"><span class="pre">test_replace_tag_with_its_parent_raises_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_tag_with_its_parent_raises_exception" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_tag_into_itself_raises_exception">
+<span class="sig-name descname"><span class="pre">test_insert_tag_into_itself_raises_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_tag_into_itself_raises_exception" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_beautifulsoup_object_inserts_children">
+<span class="sig-name descname"><span class="pre">test_insert_beautifulsoup_object_inserts_children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_beautifulsoup_object_inserts_children" title="Permalink to this definition">#</a></dt>
+<dd><p>Inserting one BeautifulSoup object into another actually inserts all
+of its children – you’ll never combine BeautifulSoup objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_with_maintains_next_element_throughout">
+<span class="sig-name descname"><span class="pre">test_replace_with_maintains_next_element_throughout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with_maintains_next_element_throughout" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_final_node">
+<span class="sig-name descname"><span class="pre">test_replace_final_node</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_final_node" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_consecutive_text_nodes">
+<span class="sig-name descname"><span class="pre">test_consecutive_text_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_consecutive_text_nodes" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_string">
+<span class="sig-name descname"><span class="pre">test_insert_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_string" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_tag">
+<span class="sig-name descname"><span class="pre">test_insert_tag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_tag" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_append_child_thats_already_at_the_end">
+<span class="sig-name descname"><span class="pre">test_append_child_thats_already_at_the_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_append_child_thats_already_at_the_end" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_extend">
+<span class="sig-name descname"><span class="pre">test_extend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_extend" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_extend_with_another_tags_contents">
+<span class="sig-name descname"><span class="pre">test_extend_with_another_tags_contents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">get_tags</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_extend_with_another_tags_contents" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_move_tag_to_beginning_of_parent">
+<span class="sig-name descname"><span class="pre">test_move_tag_to_beginning_of_parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_move_tag_to_beginning_of_parent" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_works_on_empty_element_tag">
+<span class="sig-name descname"><span class="pre">test_insert_works_on_empty_element_tag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_works_on_empty_element_tag" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_before">
+<span class="sig-name descname"><span class="pre">test_insert_before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_before" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_multiple_before">
+<span class="sig-name descname"><span class="pre">test_insert_multiple_before</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_multiple_before" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_after">
+<span class="sig-name descname"><span class="pre">test_insert_after</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_after" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_multiple_after">
+<span class="sig-name descname"><span class="pre">test_insert_multiple_after</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_multiple_after" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_after_raises_exception_if_after_has_no_meaning">
+<span class="sig-name descname"><span class="pre">test_insert_after_raises_exception_if_after_has_no_meaning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_after_raises_exception_if_after_has_no_meaning" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_insert_before_raises_notimplementederror_if_before_has_no_meaning">
+<span class="sig-name descname"><span class="pre">test_insert_before_raises_notimplementederror_if_before_has_no_meaning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_insert_before_raises_notimplementederror_if_before_has_no_meaning" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_with">
+<span class="sig-name descname"><span class="pre">test_replace_with</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_with_errors">
+<span class="sig-name descname"><span class="pre">test_replace_with_errors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with_errors" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_with_multiple">
+<span class="sig-name descname"><span class="pre">test_replace_with_multiple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with_multiple" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_first_child">
+<span class="sig-name descname"><span class="pre">test_replace_first_child</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_first_child" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_replace_last_child">
+<span class="sig-name descname"><span class="pre">test_replace_last_child</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_replace_last_child" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_nested_tag_replace_with">
+<span class="sig-name descname"><span class="pre">test_nested_tag_replace_with</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_nested_tag_replace_with" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_unwrap">
+<span class="sig-name descname"><span class="pre">test_unwrap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_unwrap" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_wrap">
+<span class="sig-name descname"><span class="pre">test_wrap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_wrap" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_wrap_extracts_tag_from_elsewhere">
+<span class="sig-name descname"><span class="pre">test_wrap_extracts_tag_from_elsewhere</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_wrap_extracts_tag_from_elsewhere" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_wrap_puts_new_contents_at_the_end">
+<span class="sig-name descname"><span class="pre">test_wrap_puts_new_contents_at_the_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_wrap_puts_new_contents_at_the_end" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_extract">
+<span class="sig-name descname"><span class="pre">test_extract</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_extract" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_extract_distinguishes_between_identical_strings">
+<span class="sig-name descname"><span class="pre">test_extract_distinguishes_between_identical_strings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_extract_distinguishes_between_identical_strings" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_extract_multiples_of_same_tag">
+<span class="sig-name descname"><span class="pre">test_extract_multiples_of_same_tag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_extract_multiples_of_same_tag" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_extract_works_when_element_is_surrounded_by_identical_strings">
+<span class="sig-name descname"><span class="pre">test_extract_works_when_element_is_surrounded_by_identical_strings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_extract_works_when_element_is_surrounded_by_identical_strings" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_clear">
+<span class="sig-name descname"><span class="pre">test_clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_clear" title="Permalink to this definition">#</a></dt>
+<dd><p>Tag.clear()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_decompose">
+<span class="sig-name descname"><span class="pre">test_decompose</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_decompose" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_string_set">
+<span class="sig-name descname"><span class="pre">test_string_set</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_string_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Tag.string = ‘string’</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_string_set_does_not_affect_original_string">
+<span class="sig-name descname"><span class="pre">test_string_set_does_not_affect_original_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_string_set_does_not_affect_original_string" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestTreeModification.test_set_string_preserves_class_of_string">
+<span class="sig-name descname"><span class="pre">test_set_string_preserves_class_of_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestTreeModification.test_set_string_preserves_class_of_string" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestDeprecatedArguments">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bs4.tests.test_tree.</span></span><span class="sig-name descname"><span class="pre">TestDeprecatedArguments</span></span><a class="headerlink" href="#bs4.tests.test_tree.TestDeprecatedArguments" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../index.html#bs4.tests.SoupTest" title="bs4.tests.SoupTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bs4.tests.SoupTest</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestDeprecatedArguments.test_find_type_method_string">
+<span class="sig-name descname"><span class="pre">test_find_type_method_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestDeprecatedArguments.test_find_type_method_string" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bs4.tests.test_tree.TestDeprecatedArguments.test_soupstrainer_constructor_string">
+<span class="sig-name descname"><span class="pre">test_soupstrainer_constructor_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bs4.tests.test_tree.TestDeprecatedArguments.test_soupstrainer_constructor_string" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../../css/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.css</span></code></div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../test_tag/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_tag</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, author
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">bs4.tests.test_tree</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFind"><code class="docutils literal notranslate"><span class="pre">TestFind</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFind.test_find_tag"><code class="docutils literal notranslate"><span class="pre">TestFind.test_find_tag()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFind.test_unicode_text_find"><code class="docutils literal notranslate"><span class="pre">TestFind.test_unicode_text_find()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFind.test_unicode_attribute_find"><code class="docutils literal notranslate"><span class="pre">TestFind.test_unicode_attribute_find()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFind.test_find_everything"><code class="docutils literal notranslate"><span class="pre">TestFind.test_find_everything()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFind.test_find_everything_with_name"><code class="docutils literal notranslate"><span class="pre">TestFind.test_find_everything_with_name()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAll"><code class="docutils literal notranslate"><span class="pre">TestFindAll</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAll.test_find_all_text_nodes"><code class="docutils literal notranslate"><span class="pre">TestFindAll.test_find_all_text_nodes()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAll.test_find_all_limit"><code class="docutils literal notranslate"><span class="pre">TestFindAll.test_find_all_limit()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAll.test_calling_a_tag_is_calling_findall"><code class="docutils literal notranslate"><span class="pre">TestFindAll.test_calling_a_tag_is_calling_findall()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAll.test_find_all_with_self_referential_data_structure_does_not_cause_infinite_recursion"><code class="docutils literal notranslate"><span class="pre">TestFindAll.test_find_all_with_self_referential_data_structure_does_not_cause_infinite_recursion()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAll.test_find_all_resultset"><code class="docutils literal notranslate"><span class="pre">TestFindAll.test_find_all_resultset()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllBasicNamespaces"><code class="docutils literal notranslate"><span class="pre">TestFindAllBasicNamespaces</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllBasicNamespaces.test_find_by_namespaced_name"><code class="docutils literal notranslate"><span class="pre">TestFindAllBasicNamespaces.test_find_by_namespaced_name()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.setup_method"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.setup_method()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_name"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.test_find_all_by_tag_name()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_name_and_text"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.test_find_all_by_name_and_text()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_on_non_root_element"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.test_find_all_on_non_root_element()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.test_calling_element_invokes_find_all"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.test_calling_element_invokes_find_all()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_strainer"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.test_find_all_by_tag_strainer()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_names"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.test_find_all_by_tag_names()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_dict"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.test_find_all_by_tag_dict()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_by_tag_re"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.test_find_all_by_tag_re()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.test_find_all_with_tags_matching_method"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.test_find_all_with_tags_matching_method()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByName.test_find_with_multi_valued_attribute"><code class="docutils literal notranslate"><span class="pre">TestFindAllByName.test_find_with_multi_valued_attribute()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_attribute_name"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_by_attribute_name()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_utf8_attribute_value"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_by_utf8_attribute_value()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_attribute_dict"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_by_attribute_dict()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_class"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_by_class()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_class_when_multiple_classes_present"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_by_class_when_multiple_classes_present()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_non_dictionary_for_attrs_finds_by_class"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_with_non_dictionary_for_attrs_finds_by_class()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_string_for_attrs_finds_multiple_classes"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_with_string_for_attrs_finds_multiple_classes()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_by_attribute_soupstrainer"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_by_attribute_soupstrainer()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_missing_attribute"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_with_missing_attribute()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_defined_attribute"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_with_defined_attribute()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_numeric_attribute"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_with_numeric_attribute()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_list_attribute_values"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_with_list_attribute_values()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_all_with_regular_expression_attribute_value"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_all_with_regular_expression_attribute_value()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_name_and_containing_string"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_by_name_and_containing_string()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_name_and_containing_string_when_string_is_buried"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_by_name_and_containing_string_when_string_is_buried()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestFindAllByAttribute.test_find_by_attribute_and_containing_string"><code class="docutils literal notranslate"><span class="pre">TestFindAllByAttribute.test_find_by_attribute_and_containing_string()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestSmooth"><code class="docutils literal notranslate"><span class="pre">TestSmooth</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestSmooth.test_smooth"><code class="docutils literal notranslate"><span class="pre">TestSmooth.test_smooth()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestIndex"><code class="docutils literal notranslate"><span class="pre">TestIndex</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestIndex.test_index"><code class="docutils literal notranslate"><span class="pre">TestIndex.test_index()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations"><code class="docutils literal notranslate"><span class="pre">TestParentOperations</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations.setup_method"><code class="docutils literal notranslate"><span class="pre">TestParentOperations.setup_method()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations.test_parent"><code class="docutils literal notranslate"><span class="pre">TestParentOperations.test_parent()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations.test_parent_of_top_tag_is_soup_object"><code class="docutils literal notranslate"><span class="pre">TestParentOperations.test_parent_of_top_tag_is_soup_object()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations.test_soup_object_has_no_parent"><code class="docutils literal notranslate"><span class="pre">TestParentOperations.test_soup_object_has_no_parent()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations.test_find_parents"><code class="docutils literal notranslate"><span class="pre">TestParentOperations.test_find_parents()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations.test_find_parent"><code class="docutils literal notranslate"><span class="pre">TestParentOperations.test_find_parent()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations.test_parent_of_text_element"><code class="docutils literal notranslate"><span class="pre">TestParentOperations.test_parent_of_text_element()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations.test_text_element_find_parent"><code class="docutils literal notranslate"><span class="pre">TestParentOperations.test_text_element_find_parent()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestParentOperations.test_parent_generator"><code class="docutils literal notranslate"><span class="pre">TestParentOperations.test_parent_generator()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.ProximityTest"><code class="docutils literal notranslate"><span class="pre">ProximityTest</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.ProximityTest.setup_method"><code class="docutils literal notranslate"><span class="pre">ProximityTest.setup_method()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextOperations"><code class="docutils literal notranslate"><span class="pre">TestNextOperations</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextOperations.setup_method"><code class="docutils literal notranslate"><span class="pre">TestNextOperations.setup_method()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextOperations.test_next"><code class="docutils literal notranslate"><span class="pre">TestNextOperations.test_next()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextOperations.test_next_of_last_item_is_none"><code class="docutils literal notranslate"><span class="pre">TestNextOperations.test_next_of_last_item_is_none()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextOperations.test_next_of_root_is_none"><code class="docutils literal notranslate"><span class="pre">TestNextOperations.test_next_of_root_is_none()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextOperations.test_find_all_next"><code class="docutils literal notranslate"><span class="pre">TestNextOperations.test_find_all_next()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextOperations.test_find_next"><code class="docutils literal notranslate"><span class="pre">TestNextOperations.test_find_next()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextOperations.test_find_next_for_text_element"><code class="docutils literal notranslate"><span class="pre">TestNextOperations.test_find_next_for_text_element()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextOperations.test_next_generator"><code class="docutils literal notranslate"><span class="pre">TestNextOperations.test_next_generator()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousOperations"><code class="docutils literal notranslate"><span class="pre">TestPreviousOperations</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousOperations.setup_method"><code class="docutils literal notranslate"><span class="pre">TestPreviousOperations.setup_method()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousOperations.test_previous"><code class="docutils literal notranslate"><span class="pre">TestPreviousOperations.test_previous()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousOperations.test_previous_of_first_item_is_none"><code class="docutils literal notranslate"><span class="pre">TestPreviousOperations.test_previous_of_first_item_is_none()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousOperations.test_previous_of_root_is_none"><code class="docutils literal notranslate"><span class="pre">TestPreviousOperations.test_previous_of_root_is_none()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousOperations.test_find_all_previous"><code class="docutils literal notranslate"><span class="pre">TestPreviousOperations.test_find_all_previous()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousOperations.test_find_previous"><code class="docutils literal notranslate"><span class="pre">TestPreviousOperations.test_find_previous()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousOperations.test_find_previous_for_text_element"><code class="docutils literal notranslate"><span class="pre">TestPreviousOperations.test_find_previous_for_text_element()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousOperations.test_previous_generator"><code class="docutils literal notranslate"><span class="pre">TestPreviousOperations.test_previous_generator()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.SiblingTest"><code class="docutils literal notranslate"><span class="pre">SiblingTest</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.SiblingTest.setup_method"><code class="docutils literal notranslate"><span class="pre">SiblingTest.setup_method()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextSibling"><code class="docutils literal notranslate"><span class="pre">TestNextSibling</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextSibling.setup_method"><code class="docutils literal notranslate"><span class="pre">TestNextSibling.setup_method()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextSibling.test_next_sibling_of_root_is_none"><code class="docutils literal notranslate"><span class="pre">TestNextSibling.test_next_sibling_of_root_is_none()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextSibling.test_next_sibling"><code class="docutils literal notranslate"><span class="pre">TestNextSibling.test_next_sibling()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextSibling.test_next_sibling_may_not_exist"><code class="docutils literal notranslate"><span class="pre">TestNextSibling.test_next_sibling_may_not_exist()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextSibling.test_find_next_sibling"><code class="docutils literal notranslate"><span class="pre">TestNextSibling.test_find_next_sibling()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextSibling.test_next_siblings"><code class="docutils literal notranslate"><span class="pre">TestNextSibling.test_next_siblings()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestNextSibling.test_next_sibling_for_text_element"><code class="docutils literal notranslate"><span class="pre">TestNextSibling.test_next_sibling_for_text_element()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousSibling"><code class="docutils literal notranslate"><span class="pre">TestPreviousSibling</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousSibling.setup_method"><code class="docutils literal notranslate"><span class="pre">TestPreviousSibling.setup_method()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling_of_root_is_none"><code class="docutils literal notranslate"><span class="pre">TestPreviousSibling.test_previous_sibling_of_root_is_none()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling"><code class="docutils literal notranslate"><span class="pre">TestPreviousSibling.test_previous_sibling()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling_may_not_exist"><code class="docutils literal notranslate"><span class="pre">TestPreviousSibling.test_previous_sibling_may_not_exist()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousSibling.test_find_previous_sibling"><code class="docutils literal notranslate"><span class="pre">TestPreviousSibling.test_find_previous_sibling()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousSibling.test_previous_siblings"><code class="docutils literal notranslate"><span class="pre">TestPreviousSibling.test_previous_siblings()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestPreviousSibling.test_previous_sibling_for_text_element"><code class="docutils literal notranslate"><span class="pre">TestPreviousSibling.test_previous_sibling_for_text_element()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification"><code class="docutils literal notranslate"><span class="pre">TestTreeModification</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_attribute_modification"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_attribute_modification()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_new_tag_creation"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_new_tag_creation()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_append_to_contents_moves_tag"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_append_to_contents_moves_tag()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with_returns_thing_that_was_replaced"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_with_returns_thing_that_was_replaced()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_unwrap_returns_thing_that_was_replaced"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_unwrap_returns_thing_that_was_replaced()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with_and_unwrap_give_useful_exception_when_tag_has_no_parent"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_with_and_unwrap_give_useful_exception_when_tag_has_no_parent()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_tag_with_itself"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_tag_with_itself()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_tag_with_its_parent_raises_exception"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_tag_with_its_parent_raises_exception()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_tag_into_itself_raises_exception"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_tag_into_itself_raises_exception()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_beautifulsoup_object_inserts_children"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_beautifulsoup_object_inserts_children()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with_maintains_next_element_throughout"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_with_maintains_next_element_throughout()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_final_node"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_final_node()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_consecutive_text_nodes"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_consecutive_text_nodes()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_string"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_string()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_tag"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_tag()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_append_child_thats_already_at_the_end"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_append_child_thats_already_at_the_end()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_extend"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_extend()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_extend_with_another_tags_contents"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_extend_with_another_tags_contents()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_move_tag_to_beginning_of_parent"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_move_tag_to_beginning_of_parent()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_works_on_empty_element_tag"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_works_on_empty_element_tag()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_before"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_before()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_multiple_before"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_multiple_before()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_after"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_after()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_multiple_after"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_multiple_after()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_after_raises_exception_if_after_has_no_meaning"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_after_raises_exception_if_after_has_no_meaning()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_insert_before_raises_notimplementederror_if_before_has_no_meaning"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_insert_before_raises_notimplementederror_if_before_has_no_meaning()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_with()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with_errors"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_with_errors()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_with_multiple"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_with_multiple()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_first_child"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_first_child()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_replace_last_child"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_replace_last_child()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_nested_tag_replace_with"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_nested_tag_replace_with()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_unwrap"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_unwrap()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_wrap"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_wrap()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_wrap_extracts_tag_from_elsewhere"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_wrap_extracts_tag_from_elsewhere()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_wrap_puts_new_contents_at_the_end"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_wrap_puts_new_contents_at_the_end()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_extract"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_extract()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_extract_distinguishes_between_identical_strings"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_extract_distinguishes_between_identical_strings()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_extract_multiples_of_same_tag"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_extract_multiples_of_same_tag()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_extract_works_when_element_is_surrounded_by_identical_strings"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_extract_works_when_element_is_surrounded_by_identical_strings()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_clear"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_clear()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_decompose"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_decompose()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_string_set"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_string_set()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_string_set_does_not_affect_original_string"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_string_set_does_not_affect_original_string()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestTreeModification.test_set_string_preserves_class_of_string"><code class="docutils literal notranslate"><span class="pre">TestTreeModification.test_set_string_preserves_class_of_string()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestDeprecatedArguments"><code class="docutils literal notranslate"><span class="pre">TestDeprecatedArguments</span></code></a><ul>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestDeprecatedArguments.test_find_type_method_string"><code class="docutils literal notranslate"><span class="pre">TestDeprecatedArguments.test_find_type_method_string()</span></code></a></li>
+<li><a class="reference internal" href="#bs4.tests.test_tree.TestDeprecatedArguments.test_soupstrainer_constructor_string"><code class="docutils literal notranslate"><span class="pre">TestDeprecatedArguments.test_soupstrainer_constructor_string()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/scripts/furo.js"></script>
+    </body>
+</html>

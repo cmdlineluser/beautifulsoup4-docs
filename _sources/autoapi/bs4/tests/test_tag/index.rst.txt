@@ -1,0 +1,122 @@
+:py:mod:`bs4.tests.test_tag`
+============================
+
+.. py:module:: bs4.tests.test_tag
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_tag.TestTag
+   bs4.tests.test_tag.TestMultiValuedAttributes
+
+
+
+
+.. py:class:: TestTag
+
+
+   Bases: :py:obj:`bs4.tests.SoupTest`
+
+   Test various methods of Tag which aren't so complicated they
+   need their own classes.
+
+   .. py:method:: test__should_pretty_print()
+
+
+   .. py:method:: test_len()
+
+      The length of a Tag is its number of children.
+
+
+   .. py:method:: test_member_access_invokes_find()
+
+      Accessing a Python member .foo invokes find('foo')
+
+
+   .. py:method:: test_deprecated_member_access()
+
+
+   .. py:method:: test_has_attr()
+
+      has_attr() checks for the presence of an attribute.
+
+      Please note note: has_attr() is different from
+      __in__. has_attr() checks the tag's attributes and __in__
+      checks the tag's chidlren.
+
+
+   .. py:method:: test_attributes_come_out_in_alphabetical_order()
+
+
+   .. py:method:: test_string()
+
+
+   .. py:method:: test_empty_tag_has_no_string()
+
+
+   .. py:method:: test_tag_with_multiple_children_has_no_string()
+
+
+   .. py:method:: test_tag_with_recursive_string_has_string()
+
+
+   .. py:method:: test_lack_of_string()
+
+      Only a Tag containing a single text node has a .string.
+
+
+   .. py:method:: test_all_text()
+
+      Tag.text and Tag.get_text(sep=u"") -> all child text, concatenated
+
+
+   .. py:method:: test_get_text_ignores_special_string_containers()
+
+
+   .. py:method:: test_all_strings_ignores_special_string_containers()
+
+
+   .. py:method:: test_string_methods_inside_special_string_container_tags()
+
+
+
+.. py:class:: TestMultiValuedAttributes
+
+
+   Bases: :py:obj:`bs4.tests.SoupTest`
+
+   Test the behavior of multi-valued attributes like 'class'.
+
+   The values of such attributes are always presented as lists.
+
+   .. py:method:: test_single_value_becomes_list()
+
+
+   .. py:method:: test_multiple_values_becomes_list()
+
+
+   .. py:method:: test_multiple_values_separated_by_weird_whitespace()
+
+
+   .. py:method:: test_attributes_joined_into_string_on_output()
+
+
+   .. py:method:: test_get_attribute_list()
+
+
+   .. py:method:: test_accept_charset()
+
+
+   .. py:method:: test_cdata_attribute_applying_only_to_one_tag()
+
+
+   .. py:method:: test_customization()
+
+
+

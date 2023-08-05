@@ -1,0 +1,28 @@
+:py:mod:`bs4.tests.test_builder`
+================================
+
+.. py:module:: bs4.tests.test_builder
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_builder.TestDetectsXMLParsedAsHTML
+
+
+
+
+.. py:class:: TestDetectsXMLParsedAsHTML
+
+
+   Bases: :py:obj:`object`
+
+   .. py:method:: test_warn_if_markup_looks_like_xml(markup, looks_like_xml)
+
+
+

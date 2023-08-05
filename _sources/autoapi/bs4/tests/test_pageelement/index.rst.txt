@@ -1,0 +1,162 @@
+:py:mod:`bs4.tests.test_pageelement`
+====================================
+
+.. py:module:: bs4.tests.test_pageelement
+
+.. autoapi-nested-parse::
+
+   Tests of the bs4.element.PageElement class
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_pageelement.TestEncoding
+   bs4.tests.test_pageelement.TestFormatters
+   bs4.tests.test_pageelement.TestPersistence
+
+
+
+
+.. py:class:: TestEncoding
+
+
+   Bases: :py:obj:`bs4.tests.SoupTest`
+
+   Test the ability to encode objects into strings.
+
+   .. py:method:: test_unicode_string_can_be_encoded()
+
+
+   .. py:method:: test_tag_containing_unicode_string_can_be_encoded()
+
+
+   .. py:method:: test_encoding_substitutes_unrecognized_characters_by_default()
+
+
+   .. py:method:: test_encoding_can_be_made_strict()
+
+
+   .. py:method:: test_decode_contents()
+
+
+   .. py:method:: test_encode_contents()
+
+
+   .. py:method:: test_encode_deeply_nested_document()
+
+
+   .. py:method:: test_deprecated_renderContents()
+
+
+   .. py:method:: test_repr()
+
+
+
+.. py:class:: TestFormatters
+
+
+   Bases: :py:obj:`bs4.tests.SoupTest`
+
+   Test the formatting feature, used by methods like decode() and
+   prettify(), and the formatters themselves.
+
+   .. py:method:: test_default_formatter_is_minimal()
+
+
+   .. py:method:: test_formatter_html()
+
+
+   .. py:method:: test_formatter_html5()
+
+
+   .. py:method:: test_formatter_minimal()
+
+
+   .. py:method:: test_formatter_null()
+
+
+   .. py:method:: test_formatter_custom()
+
+
+   .. py:method:: test_formatter_is_run_on_attribute_values()
+
+
+   .. py:method:: test_formatter_skips_script_tag_for_html_documents()
+
+
+   .. py:method:: test_formatter_skips_style_tag_for_html_documents()
+
+
+   .. py:method:: test_prettify_leaves_preformatted_text_alone()
+
+
+   .. py:method:: test_prettify_handles_nested_string_literal_tags()
+
+
+   .. py:method:: test_prettify_accepts_formatter_function()
+
+
+   .. py:method:: test_prettify_outputs_unicode_by_default()
+
+
+   .. py:method:: test_prettify_can_encode_data()
+
+
+   .. py:method:: test_html_entity_substitution_off_by_default()
+
+
+   .. py:method:: test_encoding_substitution()
+
+
+   .. py:method:: test_encoding_substitution_doesnt_happen_if_tag_is_strained()
+
+
+
+.. py:class:: TestPersistence
+
+
+   Bases: :py:obj:`bs4.tests.SoupTest`
+
+   Testing features like pickle and deepcopy.
+
+   .. py:method:: setup_method()
+
+
+   .. py:method:: test_pickle_and_unpickle_identity()
+
+
+   .. py:method:: test_deepcopy_identity()
+
+
+   .. py:method:: test_copy_deeply_nested_document()
+
+
+   .. py:method:: test_copy_preserves_encoding()
+
+
+   .. py:method:: test_copy_preserves_builder_information()
+
+
+   .. py:method:: test_unicode_pickle()
+
+
+   .. py:method:: test_copy_navigablestring_is_not_attached_to_tree()
+
+
+   .. py:method:: test_copy_navigablestring_subclass_has_same_type()
+
+
+   .. py:method:: test_copy_entire_soup()
+
+
+   .. py:method:: test_copy_tag_copies_contents()
+
+
+

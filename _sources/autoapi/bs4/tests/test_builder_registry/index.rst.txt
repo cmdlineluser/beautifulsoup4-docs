@@ -1,0 +1,80 @@
+:py:mod:`bs4.tests.test_builder_registry`
+=========================================
+
+.. py:module:: bs4.tests.test_builder_registry
+
+.. autoapi-nested-parse::
+
+   Tests of the builder registry.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_builder_registry.TestBuiltInRegistry
+   bs4.tests.test_builder_registry.TestRegistry
+
+
+
+
+.. py:class:: TestBuiltInRegistry
+
+
+   Bases: :py:obj:`object`
+
+   Test the built-in registry with the default builders registered.
+
+   .. py:method:: test_combination()
+
+
+   .. py:method:: test_lookup_by_markup_type()
+
+
+   .. py:method:: test_named_library()
+
+
+   .. py:method:: test_beautifulsoup_constructor_does_lookup()
+
+
+
+.. py:class:: TestRegistry
+
+
+   Bases: :py:obj:`object`
+
+   Test the TreeBuilderRegistry class in general.
+
+   .. py:method:: setup_method()
+
+
+   .. py:method:: builder_for_features(*feature_list)
+
+
+   .. py:method:: test_register_with_no_features()
+
+
+   .. py:method:: test_register_with_features_makes_lookup_succeed()
+
+
+   .. py:method:: test_lookup_fails_when_no_builder_implements_feature()
+
+
+   .. py:method:: test_lookup_gets_most_recent_registration_when_no_feature_specified()
+
+
+   .. py:method:: test_lookup_fails_when_no_tree_builders_registered()
+
+
+   .. py:method:: test_lookup_gets_most_recent_builder_supporting_all_features()
+
+
+   .. py:method:: test_lookup_fails_when_cannot_reconcile_requested_features()
+
+
+

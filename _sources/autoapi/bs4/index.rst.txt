@@ -1,0 +1,330 @@
+:py:mod:`bs4`
+=============
+
+.. py:module:: bs4
+
+.. autoapi-nested-parse::
+
+   Beautiful Soup Elixir and Tonic - "The Screen-Scraper's Friend".
+
+   http://www.crummy.com/software/BeautifulSoup/
+
+   Beautiful Soup uses a pluggable XML or HTML parser to parse a
+   (possibly invalid) document into a tree representation. Beautiful Soup
+   provides methods and Pythonic idioms that make it easy to navigate,
+   search, and modify the parse tree.
+
+   Beautiful Soup works with Python 3.6 and up. It works better if lxml
+   and/or html5lib is installed.
+
+   For more than you ever wanted to know about Beautiful Soup, see the
+   documentation: http://www.crummy.com/software/BeautifulSoup/bs4/doc/
+
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   builder/index.rst
+   tests/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   css/index.rst
+   dammit/index.rst
+   diagnose/index.rst
+   element/index.rst
+   formatter/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.BeautifulSoup
+
+
+
+
+.. py:class:: BeautifulSoup(markup='', features=None, builder=None, parse_only=None, from_encoding=None, exclude_encodings=None, element_classes=None, **kwargs)
+
+
+   Bases: :py:obj:`element.Tag`
+
+   A data structure representing a parsed HTML or XML document.
+
+   Most of the methods you'll call on a BeautifulSoup object are inherited from
+   PageElement or Tag.
+
+   Internally, this class defines the basic interface called by the
+   tree builders when converting an HTML/XML document into a data
+   structure. The interface abstracts away the differences between
+   parsers. To write a new tree builder, you'll need to understand
+   these methods as a whole.
+
+   These methods will be called by the BeautifulSoup constructor:
+     * reset()
+     * feed(markup)
+
+   The tree builder may call these methods from its feed() implementation:
+     * handle_starttag(name, attrs) # See note about return value
+     * handle_endtag(name)
+     * handle_data(data) # Appends to the current data node
+     * endData(containerClass) # Ends the current data node
+
+   No matter how complicated the underlying parser is, you should be
+   able to build a tree using 'start tag' events, 'end tag' events,
+   'data' events, and "done with data" events.
+
+   If you encounter an empty-element tag (aka a self-closing tag,
+   like HTML's <br> tag), call handle_starttag and then
+   handle_endtag.
+
+   .. py:attribute:: ROOT_TAG_NAME
+      :value: '[document]'
+
+      
+
+   .. py:attribute:: DEFAULT_BUILDER_FEATURES
+      :value: ['html', 'fast']
+
+      
+
+   .. py:attribute:: ASCII_SPACES
+      :value: Multiline-String
+
+       .. raw:: html
+
+           <details><summary>Show Value</summary>
+
+       .. code-block:: python
+
+           """ 
+           	
+           """
+
+       .. raw:: html
+
+           </details>
+
+      
+
+   .. py:attribute:: NO_PARSER_SPECIFIED_WARNING
+      :value: Multiline-String
+
+       .. raw:: html
+
+           <details><summary>Show Value</summary>
+
+       .. code-block:: python
+
+           """No parser was explicitly specified, so I'm using the best available %(markup_type)s parser for this system ("%(parser)s"). This usually isn't a problem, but if you run this code on another system, or in a different virtual environment, it may use a different parser and behave differently.
+           
+           The code that caused this warning is on line %(line_number)s of the file %(filename)s. To get rid of this warning, pass the additional argument 'features="%(parser)s"' to the BeautifulSoup constructor.
+           """
+
+       .. raw:: html
+
+           </details>
+
+      
+
+   .. py:method:: _clone()
+
+      Create a new BeautifulSoup object with the same TreeBuilder,
+      but not associated with any markup.
+
+      This is the first step of the deepcopy process.
+
+
+   .. py:method:: __getstate__()
+
+      Helper for pickle.
+
+
+   .. py:method:: __setstate__(state)
+
+
+   .. py:method:: _decode_markup(markup)
+      :classmethod:
+
+      Ensure `markup` is bytes so it's safe to send into warnings.warn.
+
+      TODO: warnings.warn had this problem back in 2010 but it might not
+      anymore.
+
+
+   .. py:method:: _markup_is_url(markup)
+      :classmethod:
+
+      Error-handling method to raise a warning if incoming markup looks
+      like a URL.
+
+      :param markup: A string.
+      :return: Whether or not the markup resembles a URL
+          closely enough to justify a warning.
+
+
+   .. py:method:: _markup_resembles_filename(markup)
+      :classmethod:
+
+      Error-handling method to raise a warning if incoming markup
+      resembles a filename.
+
+      :param markup: A bytestring or string.
+      :return: Whether or not the markup resembles a filename
+          closely enough to justify a warning.
+
+
+   .. py:method:: _feed()
+
+      Internal method that parses previously set markup, creating a large
+      number of Tag and NavigableString objects.
+
+
+   .. py:method:: reset()
+
+      Reset this object to a state as though it had never parsed any
+      markup.
+
+
+   .. py:method:: new_tag(name, namespace=None, nsprefix=None, attrs={}, sourceline=None, sourcepos=None, **kwattrs)
+
+      Create a new Tag associated with this BeautifulSoup object.
+
+      :param name: The name of the new Tag.
+      :param namespace: The URI of the new Tag's XML namespace, if any.
+      :param prefix: The prefix for the new Tag's XML namespace, if any.
+      :param attrs: A dictionary of this Tag's attribute values; can
+          be used instead of `kwattrs` for attributes like 'class'
+          that are reserved words in Python.
+      :param sourceline: The line number where this tag was
+          (purportedly) found in its source document.
+      :param sourcepos: The character position within `sourceline` where this
+          tag was (purportedly) found.
+      :param kwattrs: Keyword arguments for the new Tag's attribute values.
+
+
+
+   .. py:method:: string_container(base_class=None)
+
+
+   .. py:method:: new_string(s, subclass=None)
+
+      Create a new NavigableString associated with this BeautifulSoup
+      object.
+
+
+   .. py:method:: insert_before(*args)
+      :abstractmethod:
+
+      This method is part of the PageElement API, but `BeautifulSoup` doesn't implement
+      it because there is nothing before or after it in the parse tree.
+
+
+   .. py:method:: insert_after(*args)
+      :abstractmethod:
+
+      This method is part of the PageElement API, but `BeautifulSoup` doesn't implement
+      it because there is nothing before or after it in the parse tree.
+
+
+   .. py:method:: popTag()
+
+      Internal method called by _popToTag when a tag is closed.
+
+
+   .. py:method:: pushTag(tag)
+
+      Internal method called by handle_starttag when a tag is opened.
+
+
+   .. py:method:: endData(containerClass=None)
+
+      Method called by the TreeBuilder when the end of a data segment
+      occurs.
+
+
+   .. py:method:: object_was_parsed(o, parent=None, most_recent_element=None)
+
+      Method called by the TreeBuilder to integrate an object into the parse tree.
+
+
+   .. py:method:: _linkage_fixer(el)
+
+      Make sure linkage of this fragment is sound.
+
+
+   .. py:method:: _popToTag(name, nsprefix=None, inclusivePop=True)
+
+      Pops the tag stack up to and including the most recent
+      instance of the given tag.
+
+      If there are no open tags with the given name, nothing will be
+      popped.
+
+      :param name: Pop up to the most recent tag with this name.
+      :param nsprefix: The namespace prefix that goes with `name`.
+      :param inclusivePop: It this is false, pops the tag stack up
+        to but *not* including the most recent instqance of the
+        given tag.
+
+
+
+   .. py:method:: handle_starttag(name, namespace, nsprefix, attrs, sourceline=None, sourcepos=None, namespaces=None)
+
+      Called by the tree builder when a new tag is encountered.
+
+      :param name: Name of the tag.
+      :param nsprefix: Namespace prefix for the tag.
+      :param attrs: A dictionary of attribute values.
+      :param sourceline: The line number where this tag was found in its
+          source document.
+      :param sourcepos: The character position within `sourceline` where this
+          tag was found.
+      :param namespaces: A dictionary of all namespace prefix mappings 
+          currently in scope in the document.
+
+      If this method returns None, the tag was rejected by an active
+      SoupStrainer. You should proceed as if the tag had not occurred
+      in the document. For instance, if this was a self-closing tag,
+      don't call handle_endtag.
+
+
+   .. py:method:: handle_endtag(name, nsprefix=None)
+
+      Called by the tree builder when an ending tag is encountered.
+
+      :param name: Name of the tag.
+      :param nsprefix: Namespace prefix for the tag.
+
+
+   .. py:method:: handle_data(data)
+
+      Called by the tree builder when a chunk of textual data is encountered.
+
+
+   .. py:method:: decode(pretty_print=False, eventual_encoding=DEFAULT_OUTPUT_ENCODING, formatter='minimal', iterator=None)
+
+      Returns a string or Unicode representation of the parse tree
+          as an HTML or XML document.
+
+      :param pretty_print: If this is True, indentation will be used to
+          make the document more readable.
+      :param eventual_encoding: The encoding of the final document.
+          If this is None, the document will be a Unicode string.
+
+
+

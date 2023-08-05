@@ -1,0 +1,334 @@
+:py:mod:`bs4.builder`
+=====================
+
+.. py:module:: bs4.builder
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   _html5lib/index.rst
+   _htmlparser/index.rst
+   _lxml/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.builder.TreeBuilderRegistry
+   bs4.builder.TreeBuilder
+   bs4.builder.SAXTreeBuilder
+   bs4.builder.HTMLTreeBuilder
+
+
+
+
+.. py:class:: TreeBuilderRegistry
+
+
+   Bases: :py:obj:`object`
+
+   A way of looking up TreeBuilder subclasses by their name or by desired
+   features.
+
+   .. py:method:: register(treebuilder_class)
+
+      Register a treebuilder based on its advertised features.
+
+      :param treebuilder_class: A subclass of Treebuilder. its .features
+         attribute should list its features.
+
+
+   .. py:method:: lookup(*features)
+
+      Look up a TreeBuilder subclass with the desired features.
+
+      :param features: A list of features to look for. If none are
+          provided, the most recently registered TreeBuilder subclass
+          will be used.
+      :return: A TreeBuilder subclass, or None if there's no
+          registered subclass with all the requested features.
+
+
+
+.. py:class:: TreeBuilder(multi_valued_attributes=USE_DEFAULT, preserve_whitespace_tags=USE_DEFAULT, store_line_numbers=USE_DEFAULT, string_containers=USE_DEFAULT)
+
+
+   Bases: :py:obj:`object`
+
+   Turn a textual document into a Beautiful Soup object tree.
+
+   .. py:attribute:: NAME
+      :value: '[Unknown tree builder]'
+
+      
+
+   .. py:attribute:: ALTERNATE_NAMES
+      :value: []
+
+      
+
+   .. py:attribute:: features
+      :value: []
+
+      
+
+   .. py:attribute:: is_xml
+      :value: False
+
+      
+
+   .. py:attribute:: picklable
+      :value: False
+
+      
+
+   .. py:attribute:: empty_element_tags
+
+      
+
+   .. py:attribute:: DEFAULT_CDATA_LIST_ATTRIBUTES
+
+      
+
+   .. py:attribute:: DEFAULT_PRESERVE_WHITESPACE_TAGS
+
+      
+
+   .. py:attribute:: DEFAULT_STRING_CONTAINERS
+
+      
+
+   .. py:attribute:: USE_DEFAULT
+
+      
+
+   .. py:attribute:: TRACKS_LINE_NUMBERS
+      :value: False
+
+      
+
+   .. py:method:: initialize_soup(soup)
+
+      The BeautifulSoup object has been initialized and is now
+      being associated with the TreeBuilder.
+
+      :param soup: A BeautifulSoup object.
+
+
+   .. py:method:: reset()
+
+      Do any work necessary to reset the underlying parser
+      for a new document.
+
+      By default, this does nothing.
+
+
+   .. py:method:: can_be_empty_element(tag_name)
+
+      Might a tag with this name be an empty-element tag?
+
+      The final markup may or may not actually present this tag as
+      self-closing.
+
+      For instance: an HTMLBuilder does not consider a <p> tag to be
+      an empty-element tag (it's not in
+      HTMLBuilder.empty_element_tags). This means an empty <p> tag
+      will be presented as "<p></p>", not "<p/>" or "<p>".
+
+      The default implementation has no opinion about which tags are
+      empty-element tags, so a tag will be presented as an
+      empty-element tag if and only if it has no children.
+      "<foo></foo>" will become "<foo/>", and "<foo>bar</foo>" will
+      be left alone.
+
+      :param tag_name: The name of a markup tag.
+
+
+   .. py:method:: feed(markup)
+      :abstractmethod:
+
+      Run some incoming markup through some parsing process,
+      populating the `BeautifulSoup` object in self.soup.
+
+      This method is not implemented in TreeBuilder; it must be
+      implemented in subclasses.
+
+      :return: None.
+
+
+   .. py:method:: prepare_markup(markup, user_specified_encoding=None, document_declared_encoding=None, exclude_encodings=None)
+
+      Run any preliminary steps necessary to make incoming markup
+      acceptable to the parser.
+
+      :param markup: Some markup -- probably a bytestring.
+      :param user_specified_encoding: The user asked to try this encoding.
+      :param document_declared_encoding: The markup itself claims to be
+          in this encoding. NOTE: This argument is not used by the
+          calling code and can probably be removed.
+      :param exclude_encodings: The user asked _not_ to try any of
+          these encodings.
+
+      :yield: A series of 4-tuples:
+       (markup, encoding, declared encoding,
+        has undergone character replacement)
+
+       Each 4-tuple represents a strategy for converting the
+       document to Unicode and parsing it. Each strategy will be tried 
+       in turn.
+
+       By default, the only strategy is to parse the markup
+       as-is. See `LXMLTreeBuilderForXML` and
+       `HTMLParserTreeBuilder` for implementations that take into
+       account the quirks of particular parsers.
+
+
+   .. py:method:: test_fragment_to_document(fragment)
+
+      Wrap an HTML fragment to make it look like a document.
+
+      Different parsers do this differently. For instance, lxml
+      introduces an empty <head> tag, and html5lib
+      doesn't. Abstracting this away lets us write simple tests
+      which run HTML fragments through the parser and compare the
+      results against other HTML fragments.
+
+      This method should not be used outside of tests.
+
+      :param fragment: A string -- fragment of HTML.
+      :return: A string -- a full HTML document.
+
+
+   .. py:method:: set_up_substitutions(tag)
+
+      Set up any substitutions that will need to be performed on 
+      a `Tag` when it's output as a string.
+
+      By default, this does nothing. See `HTMLTreeBuilder` for a
+      case where this is used.
+
+      :param tag: A `Tag`
+      :return: Whether or not a substitution was performed.
+
+
+   .. py:method:: _replace_cdata_list_attribute_values(tag_name, attrs)
+
+      When an attribute value is associated with a tag that can
+      have multiple values for that attribute, convert the string
+      value to a list of strings.
+
+      Basically, replaces class="foo bar" with class=["foo", "bar"]
+
+      NOTE: This method modifies its input in place.
+
+      :param tag_name: The name of a tag.
+      :param attrs: A dictionary containing the tag's attributes.
+         Any appropriate attribute values will be modified in place.
+
+
+
+.. py:class:: SAXTreeBuilder(multi_valued_attributes=USE_DEFAULT, preserve_whitespace_tags=USE_DEFAULT, store_line_numbers=USE_DEFAULT, string_containers=USE_DEFAULT)
+
+
+   Bases: :py:obj:`TreeBuilder`
+
+   A Beautiful Soup treebuilder that listens for SAX events.
+
+   This is not currently used for anything, but it demonstrates
+   how a simple TreeBuilder would work.
+
+   .. py:method:: feed(markup)
+      :abstractmethod:
+
+      Run some incoming markup through some parsing process,
+      populating the `BeautifulSoup` object in self.soup.
+
+      This method is not implemented in TreeBuilder; it must be
+      implemented in subclasses.
+
+      :return: None.
+
+
+   .. py:method:: close()
+
+
+   .. py:method:: startElement(name, attrs)
+
+
+   .. py:method:: endElement(name)
+
+
+   .. py:method:: startElementNS(nsTuple, nodeName, attrs)
+
+
+   .. py:method:: endElementNS(nsTuple, nodeName)
+
+
+   .. py:method:: startPrefixMapping(prefix, nodeValue)
+
+
+   .. py:method:: endPrefixMapping(prefix)
+
+
+   .. py:method:: characters(content)
+
+
+   .. py:method:: startDocument()
+
+
+   .. py:method:: endDocument()
+
+
+
+.. py:class:: HTMLTreeBuilder(multi_valued_attributes=USE_DEFAULT, preserve_whitespace_tags=USE_DEFAULT, store_line_numbers=USE_DEFAULT, string_containers=USE_DEFAULT)
+
+
+   Bases: :py:obj:`TreeBuilder`
+
+   This TreeBuilder knows facts about HTML.
+
+   Such as which tags are empty-element tags.
+
+   .. py:attribute:: empty_element_tags
+
+      
+
+   .. py:attribute:: block_elements
+
+      
+
+   .. py:attribute:: DEFAULT_STRING_CONTAINERS
+
+      
+
+   .. py:attribute:: DEFAULT_CDATA_LIST_ATTRIBUTES
+
+      
+
+   .. py:attribute:: DEFAULT_PRESERVE_WHITESPACE_TAGS
+
+      
+
+   .. py:method:: set_up_substitutions(tag)
+
+      Replace the declared encoding in a <meta> tag with a placeholder,
+      to be substituted when the tag is output to a string.
+
+      An HTML document may come in to Beautiful Soup as one
+      encoding, but exit in a different encoding, and the <meta> tag
+      needs to be changed to reflect this.
+
+      :param tag: A `Tag`
+      :return: Whether or not a substitution was performed.
+
+
+

@@ -1,0 +1,136 @@
+:py:mod:`bs4.formatter`
+=======================
+
+.. py:module:: bs4.formatter
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.formatter.Formatter
+   bs4.formatter.HTMLFormatter
+   bs4.formatter.XMLFormatter
+
+
+
+
+.. py:class:: Formatter(language=None, entity_substitution=None, void_element_close_prefix='/', cdata_containing_tags=None, empty_attributes_are_booleans=False, indent=1)
+
+
+   Bases: :py:obj:`bs4.dammit.EntitySubstitution`
+
+   Describes a strategy to use when outputting a parse tree to a string.
+
+   Some parts of this strategy come from the distinction between
+   HTML4, HTML5, and XML. Others are configurable by the user.
+
+   Formatters are passed in as the `formatter` argument to methods
+   like `PageElement.encode`. Most people won't need to think about
+   formatters, and most people who need to think about them can pass
+   in one of these predefined strings as `formatter` rather than
+   making a new Formatter object:
+
+   For HTML documents:
+    * 'html' - HTML entity substitution for generic HTML documents. (default)
+    * 'html5' - HTML entity substitution for HTML5 documents, as
+                well as some optimizations in the way tags are rendered.
+    * 'minimal' - Only make the substitutions necessary to guarantee
+                  valid HTML.
+    * None - Do not perform any substitution. This will be faster
+             but may result in invalid markup.
+
+   For XML documents:
+    * 'html' - Entity substitution for XHTML documents.
+    * 'minimal' - Only make the substitutions necessary to guarantee
+                  valid XML. (default)
+    * None - Do not perform any substitution. This will be faster
+             but may result in invalid markup.
+
+   .. py:attribute:: XML_FORMATTERS
+
+      
+
+   .. py:attribute:: HTML_FORMATTERS
+
+      
+
+   .. py:attribute:: HTML
+      :value: 'html'
+
+      
+
+   .. py:attribute:: XML
+      :value: 'xml'
+
+      
+
+   .. py:attribute:: HTML_DEFAULTS
+
+      
+
+   .. py:method:: _default(language, value, kwarg)
+
+
+   .. py:method:: substitute(ns)
+
+      Process a string that needs to undergo entity substitution.
+      This may be a string encountered in an attribute value or as
+      text.
+
+      :param ns: A string.
+      :return: A string with certain characters replaced by named
+         or numeric entities.
+
+
+   .. py:method:: attribute_value(value)
+
+      Process the value of an attribute.
+
+      :param ns: A string.
+      :return: A string with certain characters replaced by named
+         or numeric entities.
+
+
+   .. py:method:: attributes(tag)
+
+      Reorder a tag's attributes however you want.
+
+      By default, attributes are sorted alphabetically. This makes
+      behavior consistent between Python 2 and Python 3, and preserves
+      backwards compatibility with older versions of Beautiful Soup.
+
+      If `empty_boolean_attributes` is True, then attributes whose
+      values are set to the empty string will be treated as boolean
+      attributes.
+
+
+
+.. py:class:: HTMLFormatter(*args, **kwargs)
+
+
+   Bases: :py:obj:`Formatter`
+
+   A generic Formatter for HTML.
+
+   .. py:attribute:: REGISTRY
+
+      
+
+
+.. py:class:: XMLFormatter(*args, **kwargs)
+
+
+   Bases: :py:obj:`Formatter`
+
+   A generic Formatter for XML.
+
+   .. py:attribute:: REGISTRY
+
+      
+
+

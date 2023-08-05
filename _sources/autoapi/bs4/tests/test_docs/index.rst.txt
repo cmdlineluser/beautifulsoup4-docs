@@ -1,0 +1,11 @@
+:py:mod:`bs4.tests.test_docs`
+=============================
+
+.. py:module:: bs4.tests.test_docs
+
+.. autoapi-nested-parse::
+
+   Test harness for doctests.
+
+
+

@@ -1,0 +1,55 @@
+:py:mod:`bs4.tests.test_fuzz`
+=============================
+
+.. py:module:: bs4.tests.test_fuzz
+
+.. autoapi-nested-parse::
+
+   This file contains test cases reported by third parties using
+   fuzzing tools, primarily from Google's oss-fuzz project. Some of these
+   represent real problems with Beautiful Soup, but many are problems in
+   libraries that Beautiful Soup depends on, and many of the test cases
+   represent different ways of triggering the same problem.
+
+   Grouping these test cases together makes it easy to see which test
+   cases represent the same problem, and puts the test cases in close
+   proximity to code that can trigger the problems.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_fuzz.TestFuzz
+
+
+
+
+.. py:class:: TestFuzz
+
+
+   Bases: :py:obj:`object`
+
+   .. py:attribute:: TESTCASE_SUFFIX
+      :value: '.testcase'
+
+      
+
+   .. py:method:: test_rejected_markup(filename)
+
+
+   .. py:method:: test_deeply_nested_document(filename)
+
+
+   .. py:method:: test_html5lib_parse_errors(filename)
+
+
+   .. py:method:: __markup(filename)
+
+
+

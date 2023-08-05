@@ -1,0 +1,375 @@
+:py:mod:`bs4.dammit`
+====================
+
+.. py:module:: bs4.dammit
+
+.. autoapi-nested-parse::
+
+   Beautiful Soup bonus library: Unicode, Dammit
+
+   This library converts a bytestream to Unicode through any means
+   necessary. It is heavily based on code from Mark Pilgrim's Universal
+   Feed Parser. It works best on XML and HTML, but it does not rewrite the
+   XML or HTML to reflect a new encoding; that's the tree builder's job.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.dammit.EntitySubstitution
+   bs4.dammit.EncodingDetector
+   bs4.dammit.UnicodeDammit
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   bs4.dammit.chardet_dammit
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   bs4.dammit.__license__
+   bs4.dammit.chardet_module
+   bs4.dammit.chardet_module
+   bs4.dammit.xml_encoding
+   bs4.dammit.html_meta
+   bs4.dammit.encoding_res
+
+
+.. py:data:: __license__
+   :value: 'MIT'
+
+   
+
+.. py:data:: chardet_module
+
+   
+
+.. py:data:: chardet_module
+
+   
+
+.. py:function:: chardet_dammit(s)
+
+
+.. py:data:: xml_encoding
+   :value: '^\\s*<\\?.*encoding=[\'"](.*?)[\'"].*\\?>'
+
+   
+
+.. py:data:: html_meta
+   :value: '<\\s*meta[^>]+charset\\s*=\\s*["\']?([^>]*?)[ /;\'">]'
+
+   
+
+.. py:data:: encoding_res
+
+   
+
+.. py:class:: EntitySubstitution
+
+
+   Bases: :py:obj:`object`
+
+   The ability to substitute XML or HTML entities for certain characters.
+
+   .. py:attribute:: CHARACTER_TO_XML_ENTITY
+
+      
+
+   .. py:attribute:: BARE_AMPERSAND_OR_BRACKET
+
+      
+
+   .. py:attribute:: AMPERSAND_OR_BRACKET
+
+      
+
+   .. py:method:: _populate_class_variables()
+
+      Initialize variables used by this class to manage the plethora of
+      HTML5 named entities.
+
+      This function returns a 3-tuple containing two dictionaries
+      and a regular expression:
+
+      unicode_to_name - A mapping of Unicode strings like "⦨" to
+      entity names like "angmsdaa". When a single Unicode string has
+      multiple entity names, we try to choose the most commonly-used
+      name.
+
+      name_to_unicode: A mapping of entity names like "angmsdaa" to 
+      Unicode strings like "⦨".
+
+      named_entity_re: A regular expression matching (almost) any
+      Unicode string that corresponds to an HTML5 named entity.
+
+
+   .. py:method:: _substitute_html_entity(matchobj)
+      :classmethod:
+
+      Used with a regular expression to substitute the
+      appropriate HTML entity for a special character string.
+
+
+   .. py:method:: _substitute_xml_entity(matchobj)
+      :classmethod:
+
+      Used with a regular expression to substitute the
+      appropriate XML entity for a special character string.
+
+
+   .. py:method:: quoted_attribute_value(value)
+      :classmethod:
+
+      Make a value into a quoted XML attribute, possibly escaping it.
+
+      Most strings will be quoted using double quotes.
+
+       Bob's Bar -> "Bob's Bar"
+
+      If a string contains double quotes, it will be quoted using
+      single quotes.
+
+       Welcome to "my bar" -> 'Welcome to "my bar"'
+
+      If a string contains both single and double quotes, the
+      double quotes will be escaped, and the string will be quoted
+      using double quotes.
+
+       Welcome to "Bob's Bar" -> "Welcome to &quot;Bob's bar&quot;
+
+
+   .. py:method:: substitute_xml(value, make_quoted_attribute=False)
+      :classmethod:
+
+      Substitute XML entities for special XML characters.
+
+      :param value: A string to be substituted. The less-than sign
+        will become &lt;, the greater-than sign will become &gt;,
+        and any ampersands will become &amp;. If you want ampersands
+        that appear to be part of an entity definition to be left
+        alone, use substitute_xml_containing_entities() instead.
+
+      :param make_quoted_attribute: If True, then the string will be
+       quoted, as befits an attribute value.
+
+
+   .. py:method:: substitute_xml_containing_entities(value, make_quoted_attribute=False)
+      :classmethod:
+
+      Substitute XML entities for special XML characters.
+
+      :param value: A string to be substituted. The less-than sign will
+        become &lt;, the greater-than sign will become &gt;, and any
+        ampersands that are not part of an entity defition will
+        become &amp;.
+
+      :param make_quoted_attribute: If True, then the string will be
+       quoted, as befits an attribute value.
+
+
+   .. py:method:: substitute_html(s)
+      :classmethod:
+
+      Replace certain Unicode characters with named HTML entities.
+
+      This differs from data.encode(encoding, 'xmlcharrefreplace')
+      in that the goal is to make the result more readable (to those
+      with ASCII displays) rather than to recover from
+      errors. There's absolutely nothing wrong with a UTF-8 string
+      containg a LATIN SMALL LETTER E WITH ACUTE, but replacing that
+      character with "&eacute;" will make it more readable to some
+      people.
+
+      :param s: A Unicode string.
+
+
+
+.. py:class:: EncodingDetector(markup, known_definite_encodings=None, is_html=False, exclude_encodings=None, user_encodings=None, override_encodings=None)
+
+
+   Suggests a number of possible encodings for a bytestring.
+
+   Order of precedence:
+
+   1. Encodings you specifically tell EncodingDetector to try first
+   (the known_definite_encodings argument to the constructor).
+
+   2. An encoding determined by sniffing the document's byte-order mark.
+
+   3. Encodings you specifically tell EncodingDetector to try if
+   byte-order mark sniffing fails (the user_encodings argument to the
+   constructor).
+
+   4. An encoding declared within the bytestring itself, either in an
+   XML declaration (if the bytestring is to be interpreted as an XML
+   document), or in a <meta> tag (if the bytestring is to be
+   interpreted as an HTML document.)
+
+   5. An encoding detected through textual analysis by chardet,
+   cchardet, or a similar external library.
+
+   4. UTF-8.
+
+   5. Windows-1252.
+
+
+   .. py:property:: encodings
+
+      Yield a number of encodings that might work for this markup.
+
+      :yield: A sequence of strings.
+
+
+   .. py:method:: _usable(encoding, tried)
+
+      Should we even bother to try this encoding?
+
+      :param encoding: Name of an encoding.
+      :param tried: Encodings that have already been tried. This will be modified
+          as a side effect.
+
+
+   .. py:method:: strip_byte_order_mark(data)
+      :classmethod:
+
+      If a byte-order mark is present, strip it and return the encoding it implies.
+
+      :param data: Some markup.
+      :return: A 2-tuple (modified data, implied encoding)
+
+
+   .. py:method:: find_declared_encoding(markup, is_html=False, search_entire_document=False)
+      :classmethod:
+
+      Given a document, tries to find its declared encoding.
+
+      An XML encoding is declared at the beginning of the document.
+
+      An HTML encoding is declared in a <meta> tag, hopefully near the
+      beginning of the document.
+
+      :param markup: Some markup.
+      :param is_html: If True, this markup is considered to be HTML. Otherwise
+          it's assumed to be XML.
+      :param search_entire_document: Since an encoding is supposed to declared near the beginning
+          of the document, most of the time it's only necessary to search a few kilobytes of data.
+          Set this to True to force this method to search the entire document.
+
+
+
+.. py:class:: UnicodeDammit(markup, known_definite_encodings=[], smart_quotes_to=None, is_html=False, exclude_encodings=[], user_encodings=None, override_encodings=None)
+
+
+   A class for detecting the encoding of a *ML document and
+   converting it to a Unicode string. If the source encoding is
+   windows-1252, can replace MS smart quotes with their HTML or XML
+   equivalents.
+
+   .. py:property:: declared_html_encoding
+
+      If the markup is an HTML document, returns the encoding declared _within_
+      the document.
+
+
+   .. py:attribute:: CHARSET_ALIASES
+
+      
+
+   .. py:attribute:: ENCODINGS_WITH_SMART_QUOTES
+      :value: ['windows-1252', 'iso-8859-1', 'iso-8859-2']
+
+      
+
+   .. py:attribute:: MS_CHARS
+
+      
+
+   .. py:attribute:: MS_CHARS_TO_ASCII
+
+      
+
+   .. py:attribute:: WINDOWS_1252_TO_UTF8
+
+      
+
+   .. py:attribute:: MULTIBYTE_MARKERS_AND_SIZES
+      :value: [(194, 223, 2), (224, 239, 3), (240, 244, 4)]
+
+      
+
+   .. py:attribute:: FIRST_MULTIBYTE_MARKER
+
+      
+
+   .. py:attribute:: LAST_MULTIBYTE_MARKER
+
+      
+
+   .. py:method:: _sub_ms_char(match)
+
+      Changes a MS smart quote character to an XML or HTML
+      entity, or an ASCII character.
+
+
+   .. py:method:: _convert_from(proposed, errors='strict')
+
+      Attempt to convert the markup to the proposed encoding.
+
+      :param proposed: The name of a character encoding.
+
+
+   .. py:method:: _to_unicode(data, encoding, errors='strict')
+
+      Given a string and its encoding, decodes the string into Unicode.
+
+      :param encoding: The name of an encoding.
+
+
+   .. py:method:: find_codec(charset)
+
+      Convert the name of a character set to a codec name.
+
+      :param charset: The name of a character set.
+      :return: The name of a codec.
+
+
+   .. py:method:: _codec(charset)
+
+
+   .. py:method:: detwingle(in_bytes, main_encoding='utf8', embedded_encoding='windows-1252')
+      :classmethod:
+
+      Fix characters from one encoding embedded in some other encoding.
+
+      Currently the only situation supported is Windows-1252 (or its
+      subset ISO-8859-1), embedded in UTF-8.
+
+      :param in_bytes: A bytestring that you suspect contains
+          characters from multiple encodings. Note that this _must_
+          be a bytestring. If you've already converted the document
+          to Unicode, you're too late.
+      :param main_encoding: The primary encoding of `in_bytes`.
+      :param embedded_encoding: The encoding that was used to embed characters
+          in the main document.
+      :return: A bytestring in which `embedded_encoding`
+        characters have been converted to their `main_encoding`
+        equivalents.
+
+
+

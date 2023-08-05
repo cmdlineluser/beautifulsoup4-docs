@@ -1,0 +1,294 @@
+:py:mod:`bs4.tests.test_css`
+============================
+
+.. py:module:: bs4.tests.test_css
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bs4.tests.test_css.TestCSSSelectors
+
+
+
+
+.. py:class:: TestCSSSelectors
+
+
+   Bases: :py:obj:`bs4.tests.SoupTest`
+
+   Test basic CSS selector functionality.
+
+   This functionality is implemented in soupsieve, which has a much
+   more comprehensive test suite, so this is basically an extra check
+   that soupsieve works as expected.
+
+   .. py:attribute:: HTML
+      :value: Multiline-String
+
+       .. raw:: html
+
+           <details><summary>Show Value</summary>
+
+       .. code-block:: python
+
+           """
+           <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+           "http://www.w3.org/TR/html4/strict.dtd">
+           <html>
+           <head>
+           <title>The title</title>
+           <link rel="stylesheet" href="blah.css" type="text/css" id="l1">
+           </head>
+           <body>
+           <custom-dashed-tag class="dashed" id="dash1">Hello there.</custom-dashed-tag>
+           <div id="main" class="fancy">
+           <div id="inner">
+           <h1 id="header1">An H1</h1>
+           <p>Some text</p>
+           <p class="onep" id="p1">Some more text</p>
+           <h2 id="header2">An H2</h2>
+           <p class="class1 class2 class3" id="pmulti">Another</p>
+           <a href="http://bob.example.org/" rel="friend met" id="bob">Bob</a>
+           <h2 id="header3">Another H2</h2>
+           <a id="me" href="http://simonwillison.net/" rel="me">me</a>
+           <span class="s1">
+           <a href="#" id="s1a1">span1a1</a>
+           <a href="#" id="s1a2">span1a2 <span id="s1a2s1">test</span></a>
+           <span class="span2">
+           <a href="#" id="s2a1">span2a1</a>
+           </span>
+           <span class="span3"></span>
+           <custom-dashed-tag class="dashed" id="dash2"/>
+           <div data-tag="dashedvalue" id="data1"/>
+           </span>
+           </div>
+           <x id="xid">
+           <z id="zida"/>
+           <z id="zidab"/>
+           <z id="zidac"/>
+           </x>
+           <y id="yid">
+           <z id="zidb"/>
+           </y>
+           <p lang="en" id="lang-en">English</p>
+           <p lang="en-gb" id="lang-en-gb">English UK</p>
+           <p lang="en-us" id="lang-en-us">English US</p>
+           <p lang="fr" id="lang-fr">French</p>
+           </div>
+           
+           <div id="footer">
+           </div>
+           """
+
+       .. raw:: html
+
+           </details>
+
+      
+
+   .. py:attribute:: assertSelect
+
+      
+
+   .. py:method:: setup_method()
+
+
+   .. py:method:: assert_selects(selector, expected_ids, **kwargs)
+
+      Make sure that the given tags have the correct text.
+
+      This is used in tests that define a bunch of tags, each
+      containing a single string, and then select certain strings by
+      some mechanism.
+
+
+   .. py:method:: assert_select_multiple(*tests)
+
+
+   .. py:method:: test_precompiled()
+
+
+   .. py:method:: test_one_tag_one()
+
+
+   .. py:method:: test_one_tag_many()
+
+
+   .. py:method:: test_select_one_returns_none_if_no_match()
+
+
+   .. py:method:: test_tag_in_tag_one()
+
+
+   .. py:method:: test_tag_in_tag_many()
+
+
+   .. py:method:: test_limit()
+
+
+   .. py:method:: test_tag_no_match()
+
+
+   .. py:method:: test_invalid_tag()
+
+
+   .. py:method:: test_select_dashed_tag_ids()
+
+
+   .. py:method:: test_select_dashed_by_id()
+
+
+   .. py:method:: test_dashed_tag_text()
+
+
+   .. py:method:: test_select_dashed_matches_find_all()
+
+
+   .. py:method:: test_header_tags()
+
+
+   .. py:method:: test_class_one()
+
+
+   .. py:method:: test_class_mismatched_tag()
+
+
+   .. py:method:: test_one_id()
+
+
+   .. py:method:: test_bad_id()
+
+
+   .. py:method:: test_items_in_id()
+
+
+   .. py:method:: test_a_bunch_of_emptys()
+
+
+   .. py:method:: test_multi_class_support()
+
+
+   .. py:method:: test_multi_class_selection()
+
+
+   .. py:method:: test_child_selector()
+
+
+   .. py:method:: test_child_selector_id()
+
+
+   .. py:method:: test_attribute_equals()
+
+
+   .. py:method:: test_attribute_tilde()
+
+
+   .. py:method:: test_attribute_startswith()
+
+
+   .. py:method:: test_attribute_endswith()
+
+
+   .. py:method:: test_attribute_contains()
+
+
+   .. py:method:: test_attribute_exact_or_hypen()
+
+
+   .. py:method:: test_attribute_exists()
+
+
+   .. py:method:: test_quoted_space_in_selector_name()
+
+
+   .. py:method:: test_unsupported_pseudoclass()
+
+
+   .. py:method:: test_nth_of_type()
+
+
+   .. py:method:: test_nth_of_type_direct_descendant()
+
+
+   .. py:method:: test_id_child_selector_nth_of_type()
+
+
+   .. py:method:: test_select_on_element()
+
+
+   .. py:method:: test_overspecified_child_id()
+
+
+   .. py:method:: test_adjacent_sibling_selector()
+
+
+   .. py:method:: test_general_sibling_selector()
+
+
+   .. py:method:: test_dangling_combinator()
+
+
+   .. py:method:: test_sibling_combinator_wont_select_same_tag_twice()
+
+
+   .. py:method:: test_multiple_select()
+
+
+   .. py:method:: test_multiple_select_with_no_space()
+
+
+   .. py:method:: test_multiple_select_with_more_space()
+
+
+   .. py:method:: test_multiple_select_duplicated()
+
+
+   .. py:method:: test_multiple_select_sibling()
+
+
+   .. py:method:: test_multiple_select_tag_and_direct_descendant()
+
+
+   .. py:method:: test_multiple_select_direct_descendant_and_tags()
+
+
+   .. py:method:: test_multiple_select_indirect_descendant()
+
+
+   .. py:method:: test_invalid_multiple_select()
+
+
+   .. py:method:: test_multiple_select_attrs()
+
+
+   .. py:method:: test_multiple_select_ids()
+
+
+   .. py:method:: test_multiple_select_nested()
+
+
+   .. py:method:: test_select_duplicate_elements()
+
+
+   .. py:method:: test_closest()
+
+
+   .. py:method:: test_match()
+
+
+   .. py:method:: test_iselect()
+
+
+   .. py:method:: test_filter()
+
+
+   .. py:method:: test_escape()
+
+
+
